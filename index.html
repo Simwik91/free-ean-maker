@@ -2,14 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Free EAN Barcode Generator</title>
-
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free QR Code Generator</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -18,15 +15,16 @@
       background: #f4f4f4;
       color: #333;
     }
-    h1, h2 {
-      margin-bottom: 0.5em;
+    h1 {
+      font-size: 2em;
+      margin-bottom: 0.2em;
     }
     p {
       margin-top: 0;
       margin-bottom: 2em;
       color: #666;
     }
-    input, select, button {
+    input, button {
       margin: 0.5em auto;
       padding: 0.75em;
       width: 90%;
@@ -35,46 +33,20 @@
       border-radius: 6px;
       border: 1px solid #ccc;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      display: block;
+      box-sizing: border-box;
     }
     button {
       background-color: #007acc;
       color: white;
       border: none;
       cursor: pointer;
-      font-weight: bold;
     }
     button:hover {
       background-color: #005fa3;
     }
-    svg {
-      margin: 1em auto;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background: white;
-      width: 300px;
-      height: 150px;
+    canvas {
+      margin-top: 1em;
       display: none;
-    }
-    .download-btn {
-      background-color: #28a745;
-      margin-top: 0.5em;
-      max-width: 200px;
-    }
-    .download-btn:hover {
-      background-color: #1e7e34;
-    }
-    .batch-section {
-      margin-top: 3em;
-      border-top: 2px solid #ccc;
-      padding-top: 2em;
-    }
-    label {
-      font-weight: bold;
-      text-align: left;
-      display: block;
-      max-width: 400px;
-      margin: 0.5em auto 0.2em auto;
     }
     footer {
       margin-top: 4em;
@@ -83,170 +55,73 @@
     }
     .sister-site-btn {
       display: block;
+      clear: both;
       background: #ff6600;
       color: white;
       padding: 0.75em 1.5em;
-      margin: 2em auto;
+      margin: 1em auto 2em auto;
       border-radius: 6px;
       text-decoration: none;
       font-weight: bold;
       max-width: 400px;
       width: 90%;
+      box-sizing: border-box;
+      transition: background-color 0.3s ease;
+      text-align: center;
     }
     .sister-site-btn:hover {
       background-color: #cc5200;
     }
+    #download-btn {
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <h1>Free EAN Barcode Generator</h1>
-  <p>Create valid EAN-8 or EAN-13 barcodes individually or in bulk, completely free!</p>
+  <h1>Free QR Code Generator</h1>
+  <p>Instantly create and download QR codes for links, text, or anything else!</p>
 
-  <h2>Single EAN Barcode Generator</h2>
-  <label for="ean-input">Enter 7 digits for EAN-8 or 12 digits for EAN-13:</label>
-  <input id="ean-input" type="text" placeholder="e.g., 1234567 or 123456789012" maxlength="12" />
-  <button onclick="handleSingleGenerate()">Generate & Download Single Barcode</button>
+  <input id="qr-input" type="text" placeholder="Enter text or URL" />
+  <br />
+  <button onclick="generateQR()">Generate QR</button>
+  <br />
+  <canvas id="qr-canvas"></canvas>
+  <br />
+  <button id="download-btn" onclick="downloadQR()">Download PNG</button>
 
-  <svg id="ean-svg" aria-label="EAN barcode"></svg>
-  <button id="download-single-btn" class="download-btn" style="display:none;">Download Barcode PNG</button>
-
-  <div class="batch-section">
-    <h2>Batch Barcode Generator</h2>
-
-    <label for="ean-type-batch">Choose Barcode Type:</label>
-    <select id="ean-type-batch">
-      <option value="ean13">EAN-13 (12-digit base)</option>
-      <option value="ean8">EAN-8 (7-digit base)</option>
-    </select>
-
-    <label for="ean-count">Number of Barcodes to Generate (1–100):</label>
-    <input id="ean-count" type="number" placeholder="e.g., 10" min="1" max="100" />
-
-    <button onclick="generateAndDownloadBatch()">Generate & Download Batch ZIP</button>
-  </div>
-
-  <a href="https://www.free-qr-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
-    Try Our Free QR Code Generator!
+  <a href="https://www.free-ean-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
+    Try our Free Barcode Generator!
   </a>
 
   <footer>
-    &copy; Free EAN Maker. Made with ❤️
+    Free QR Maker. Made with ❤️
   </footer>
 
   <script>
-    function calculateChecksum(code) {
-      let sum = 0;
-      for (let i = 0; i < code.length; i++) {
-        sum += parseInt(code[i]) * (i % 2 === 0 ? 1 : 3);
-      }
-      return (10 - (sum % 10)) % 10;
-    }
+    function generateQR() {
+      const input = document.getElementById('qr-input').value.trim();
+      const canvas = document.getElementById('qr-canvas');
+      const downloadBtn = document.getElementById('download-btn');
 
-    function renderEANToSVG(code, format) {
-      const svg = document.getElementById('ean-svg');
-      svg.style.display = 'block';
-      svg.innerHTML = '';
-      JsBarcode(svg, code, { format, displayValue: true, width: 2, height: 100 });
-    }
+      if (!input) return;
 
-    function svgToPngBlob(svgElement) {
-      return new Promise((resolve, reject) => {
-        const svgData = new XMLSerializer().serializeToString(svgElement);
-        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-        const url = URL.createObjectURL(svgBlob);
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = 300;
-          canvas.height = 150;
-          const ctx = canvas.getContext('2d');
-          ctx.fillStyle = 'white';
-          ctx.fillRect(0, 0, 300, 150);
-          ctx.drawImage(img, 0, 0);
-          URL.revokeObjectURL(url);
-          canvas.toBlob(resolve, 'image/png');
-        };
-        img.onerror = reject;
-        img.src = url;
+      QRCode.toCanvas(canvas, input, { errorCorrectionLevel: 'H' }, function (error) {
+        if (error) {
+          console.error(error);
+          alert("Could not generate QR code.");
+          return;
+        }
+        canvas.style.display = 'inline-block';
+        downloadBtn.style.display = 'inline-block';
       });
     }
 
-    function handleSingleGenerate() {
-      const input = document.getElementById('ean-input').value.trim();
-      const downloadBtn = document.getElementById('download-single-btn');
-
-      if (!/^\d+$/.test(input)) {
-        alert('Only digits are allowed.');
-        return;
-      }
-
-      let format = '', base = '';
-      if (input.length === 7) {
-        format = 'ean8';
-        base = input;
-      } else if (input.length === 12) {
-        format = 'ean13';
-        base = input;
-      } else {
-        alert('Please enter exactly 7 digits (EAN-8) or 12 digits (EAN-13).');
-        return;
-      }
-
-      const fullCode = base + calculateChecksum(base);
-      renderEANToSVG(fullCode, format);
-
-      downloadBtn.style.display = 'inline-block';
-      downloadBtn.onclick = () => {
-        const svg = document.getElementById('ean-svg');
-        svgToPngBlob(svg).then(blob => {
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob);
-          link.download = `${fullCode}.png`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        });
-      };
-    }
-
-    function generateRandomBase(length) {
-      return Math.floor(Math.random() * Math.pow(10, length)).toString().padStart(length, '0');
-    }
-
-    function generateAndDownloadBatch() {
-      const count = parseInt(document.getElementById('ean-count').value);
-      const type = document.getElementById('ean-type-batch').value;
-      const baseLength = type === 'ean13' ? 12 : 7;
-
-      if (isNaN(count) || count < 1 || count > 100) {
-        alert('Enter a number between 1 and 100.');
-        return;
-      }
-
-      const zip = new JSZip();
-      const tasks = [];
-
-      for (let i = 0; i < count; i++) {
-        const base = generateRandomBase(baseLength);
-        const code = base + calculateChecksum(base);
-
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('width', '300');
-        svg.setAttribute('height', '150');
-        JsBarcode(svg, code, { format: type, displayValue: true, width: 2, height: 100 });
-
-        tasks.push(
-          svgToPngBlob(svg).then(blob => {
-            zip.file(`${code}.png`, blob);
-          })
-        );
-      }
-
-      Promise.all(tasks).then(() => {
-        zip.generateAsync({ type: 'blob' }).then(content => {
-          saveAs(content, `${type}-barcodes.zip`);
-        });
-      });
+    function downloadQR() {
+      const canvas = document.getElementById('qr-canvas');
+      const link = document.createElement('a');
+      link.download = 'qr-code.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
     }
   </script>
 </body>
