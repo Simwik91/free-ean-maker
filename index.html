@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free QR Code Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Free EAN Barcode Generator</title>
+  
+  <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551"
     crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  
+  <!-- JsBarcode -->
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -44,9 +49,8 @@
     button:hover {
       background-color: #005fa3;
     }
-    canvas {
+    svg {
       margin-top: 1em;
-      display: none;
     }
     footer {
       margin-top: 4em;
@@ -78,51 +82,70 @@
   </style>
 </head>
 <body>
-  <h1>Free QR Code Generator</h1>
-  <p>Instantly create and download QR codes for links, text, or anything else!</p>
 
-  <input id="qr-input" type="text" placeholder="Enter text or URL" />
-  <br />
-  <button onclick="generateQR()">Generate QR</button>
-  <br />
-  <canvas id="qr-canvas"></canvas>
-  <br />
-  <button id="download-btn" onclick="downloadQR()">Download PNG</button>
+  <h1>Free EAN Barcode Generator</h1>
+  <p>Instantly create and download EAN-13 barcodes</p>
 
-  <a href="https://www.free-ean-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
-    Try our Free Barcode Generator!
+  <input id="ean-input" type="text" placeholder="Enter 12-digit number" maxlength="12" />
+  <br />
+  <button onclick="generateEAN()">Generate EAN-13</button>
+  <br />
+  <svg id="ean-svg"></svg>
+  <br />
+  <button id="download-btn" onclick="downloadEAN()">Download PNG</button>
+
+  <a href="https://www.free-qr-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
+    Try our Free QR Code Generator!
   </a>
 
   <footer>
-    Free QR Maker. Made with ❤️
+    Free EAN Maker. Made with ❤️
   </footer>
 
   <script>
-    function generateQR() {
-      const input = document.getElementById('qr-input').value.trim();
-      const canvas = document.getElementById('qr-canvas');
+    function generateEAN() {
+      const input = document.getElementById('ean-input').value.trim();
+      const svg = document.getElementById('ean-svg');
       const downloadBtn = document.getElementById('download-btn');
 
-      if (!input) return;
+      if (!/^\d{12}$/.test(input)) {
+        alert('Please enter exactly 12 digits');
+        return;
+      }
 
-      QRCode.toCanvas(canvas, input, { errorCorrectionLevel: 'H' }, function (error) {
-        if (error) {
-          console.error(error);
-          alert("Could not generate QR code.");
-          return;
-        }
-        canvas.style.display = 'inline-block';
-        downloadBtn.style.display = 'inline-block';
+      JsBarcode(svg, input, {
+        format: "ean13",
+        lineColor: "#000",
+        width: 2,
+        height: 100,
+        displayValue: true
       });
+
+      downloadBtn.style.display = 'inline-block';
     }
 
-    function downloadQR() {
-      const canvas = document.getElementById('qr-canvas');
-      const link = document.createElement('a');
-      link.download = 'qr-code.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+    function downloadEAN() {
+      const svg = document.getElementById('ean-svg');
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+
+      img.onload = function() {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        const link = document.createElement('a');
+        link.download = 'ean13-barcode.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      };
+
+      img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
     }
   </script>
+
 </body>
 </html>
