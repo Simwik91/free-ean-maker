@@ -18,28 +18,15 @@
       padding: 2em;
       background: #f4f4f4;
       color: #333;
-      max-width: 700px;
-      margin: auto;
     }
     h1 {
-      font-size: 2.2em;
+      font-size: 2em;
       margin-bottom: 0.2em;
     }
-    h2 {
-      margin-top: 2em;
-      color: #444;
-    }
-    p, ul {
-      color: #555;
-      line-height: 1.5em;
-      margin: 0.6em auto 1.5em;
-      text-align: left;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    ul {
-      padding-left: 1.2em;
+    p {
+      margin-top: 0;
+      margin-bottom: 2em;
+      color: #666;
     }
     input, button {
       margin: 0.5em auto;
@@ -58,8 +45,6 @@
       color: white;
       border: none;
       cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
     }
     button:hover {
       background-color: #005fa3;
@@ -80,7 +65,7 @@
       background: #ff6600;
       color: white;
       padding: 0.75em 1.5em;
-      margin: 2em auto 3em auto;
+      margin: 1em auto 2em auto;
       border-radius: 6px;
       text-decoration: none;
       font-weight: bold;
@@ -102,37 +87,22 @@
 </head>
 <body>
   <h1>Free EAN Code Generator</h1>
-  <p>Easily create valid EAN-13 barcodes online for your products. Just enter a 12-digit number and get a printable barcode instantly!</p>
-
-  <h2>How It Works</h2>
-  <ul>
-    <li>Input a 12-digit number (without the checksum digit)</li>
-    <li>Our tool calculates the correct checksum digit automatically</li>
-    <li>Generate the barcode image and download it as PNG</li>
-    <li>Optionally, create multiple barcodes in batch and download as a ZIP file</li>
-  </ul>
-
-  <h2>Why Use This Tool?</h2>
-  <p>
-    Whether you're a small business owner, reseller, or managing inventory, generating EAN barcodes is quick and free. No software installation needed, works right in your browser.
-  </p>
+  <p>Easily create valid EAN-13 barcodes for your products. Enter 12 digits and generate a barcode instantly.</p>
 
   <input id="ean-input" type="text" placeholder="Enter 12-digit number (EAN-13)" maxlength="12" />
   <button onclick="generateEAN()">Generate EAN</button>
 
-  <h2>Batch Generate EANs</h2>
-  <input id="ean-count" type="number" placeholder="Number of EANs to generate" min="1" max="100" />
+  <input id="ean-count" type="number" placeholder="Number of EANs to generate (batch)" min="1" max="100" />
   <button onclick="generateAndDownloadBatch()">Generate & Download as ZIP</button>
 
   <canvas id="ean-canvas" width="300" height="150"></canvas>
 
-  <!-- Sister site button -->
   <a href="https://www.free-qr-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
     Try our Free QR Code Generator!
   </a>
 
   <footer>
-    &copy; Free EAN Maker. Made with ❤️
+    <!-- No copyright text to keep consistent with QR site -->
   </footer>
 
   <script>
