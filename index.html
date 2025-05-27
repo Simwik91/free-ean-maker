@@ -28,7 +28,7 @@
       margin-bottom: 2em;
       color: #666;
     }
-    input, button {
+    input, button, select {
       margin: 0.5em auto;
       padding: 0.75em;
       width: 90%;
@@ -58,7 +58,6 @@
       border-radius: 6px;
       background: white;
     }
-    /* Sister site button */
     .sister-site-btn {
       display: block;
       clear: both;
@@ -87,13 +86,17 @@
 </head>
 <body>
   <h1>Free EAN Code Generator</h1>
-  <p>Easily create valid EAN-13 barcodes for your products. Enter 12 digits and generate a barcode instantly.</p>
+  <p>Enter 7 digits for EAN-8 or 12 digits for EAN-13 (without checksum). Generate and download instantly.</p>
 
-  <input id="ean-input" type="text" placeholder="Enter 12-digit number (EAN-13)" maxlength="12" />
-  <button onclick="generateEAN()">Generate EAN</button>
+  <input id="ean-input" type="text" placeholder="Enter 7 or 12 digits (EAN-8 or EAN-13)" maxlength="12" />
+  <button onclick="generateEAN()">Generate EAN-8 or EAN-13</button>
 
-  <input id="ean-count" type="number" placeholder="Number of EANs to generate (batch)" min="1" max="100" />
-  <button onclick="generateAndDownloadBatch()">Generate & Download as ZIP</button>
+  <select id="ean-type-batch">
+    <option value="ean13" selected>EAN-13</option>
+    <option value="ean8">EAN-8</option>
+  </select>
+  <input id="ean-count" type="number" placeholder="Number of EAN codes to generate (batch)" min="1" max="100" />
+  <button onclick="generateAndDownloadBatch()">Generate & Download Batch</button>
 
   <canvas id="ean-canvas" width="300" height="150"></canvas>
 
@@ -107,26 +110,62 @@
 
   <script>
     function calculateChecksum(code) {
+      // Generic EAN checksum calculation for both EAN-8 and EAN-13
       let sum = 0;
-      for (let i = 0; i < code.length; i++) {
-        sum += parseInt(code[i]) * (i % 2 === 0 ? 1 : 3);
+      const length = code.length;
+      for (let i = length - 1; i >= 0; i--) {
+        const num = parseInt(code[i]);
+        if ((length % 2 === 0 && i % 2 === 0) || (length % 2 === 1 && i % 2 === 1)) {
+          sum += num * 3;
+        } else {
+          sum += num;
+        }
       }
       return (10 - (sum % 10)) % 10;
     }
 
     function generateEAN() {
-      const value = document.getElementById('ean-input').value;
-      if (!/^\d{12}$/.test(value)) {
-        alert('Please enter exactly 12 digits');
+      const value = document.getElementById('ean-input').value.trim();
+      if (!/^\d+$/.test(value)) {
+        alert('Please enter only digits');
         return;
       }
-      const fullCode = value + calculateChecksum(value);
-      renderEANToCanvas(fullCode);
+
+      if (value.length === 7) {
+        // EAN-8
+        const fullCode = value + calculateChecksum(value);
+        renderEANToCanvas(fullCode, 'ean-canvas', 'ean8');
+        enableDownload(fullCode, 'ean8');
+      } else if (value.length === 12) {
+        // EAN-13
+        const fullCode = value + calculateChecksum(value);
+        renderEANToCanvas(fullCode, 'ean-canvas', 'ean13');
+        enableDownload(fullCode, 'ean13');
+      } else {
+        alert('Please enter exactly 7 digits for EAN-8 or 12 digits for EAN-13');
+      }
     }
 
-    function renderEANToCanvas(code, canvasId = 'ean-canvas') {
+    function renderEANToCanvas(code, canvasId = 'ean-canvas', format = 'ean13') {
       const canvas = document.getElementById(canvasId);
-      JsBarcode(canvas, code, { format: 'ean13', displayValue: true });
+      JsBarcode(canvas, code, { format, displayValue: true });
+    }
+
+    function enableDownload(code, format) {
+      const canvas = document.getElementById('ean-canvas');
+      canvas.toBlob(blob => {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${code}.png`;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }, 'image/png');
+    }
+
+    function generateRandomBase(length) {
+      return Math.floor(Math.random() * Math.pow(10, length)).toString().padStart(length, '0');
     }
 
     function generateAndDownloadBatch() {
@@ -136,6 +175,9 @@
         return;
       }
 
+      const type = document.getElementById('ean-type-batch').value;
+      const baseLength = type === 'ean13' ? 12 : 7;
+
       const zip = new JSZip();
       const tempCanvas = document.createElement('canvas');
       tempCanvas.width = 300;
@@ -144,10 +186,10 @@
       const promises = [];
 
       for (let i = 0; i < count; i++) {
-        const base = Math.floor(Math.random() * 1e12).toString().padStart(12, '0');
+        const base = generateRandomBase(baseLength);
         const fullCode = base + calculateChecksum(base);
 
-        JsBarcode(tempCanvas, fullCode, { format: 'ean13', displayValue: true });
+        JsBarcode(tempCanvas, fullCode, { format: type, displayValue: true });
 
         promises.push(new Promise((resolve) => {
           tempCanvas.toBlob((blob) => {
@@ -159,7 +201,7 @@
 
       Promise.all(promises).then(() => {
         zip.generateAsync({ type: 'blob' }).then((content) => {
-          saveAs(content, 'ean-codes.zip');
+          saveAs(content, `${type}-codes.zip`);
         });
       });
     }
