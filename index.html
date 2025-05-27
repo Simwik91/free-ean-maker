@@ -93,6 +93,11 @@
     .sister-site-btn:hover {
       background-color: #cc5200;
     }
+    footer {
+      margin-top: 4em;
+      font-size: 0.85em;
+      color: #888;
+    }
   </style>
 </head>
 <body>
@@ -109,16 +114,8 @@
 
   <h2>Why Use This Tool?</h2>
   <p>
-    Whether you're a small business owner, a reseller, or managing inventory, generating EAN barcodes is quick and free. No software installation needed, works right in your browser.
+    Whether you're a small business owner, reseller, or managing inventory, generating EAN barcodes is quick and free. No software installation needed, works right in your browser.
   </p>
-
-  <h2>EAN Barcode Tips</h2>
-  <ul>
-    <li>EAN-13 barcodes encode 13 digits: 12 data digits + 1 checksum</li>
-    <li>The checksum ensures barcode scanners read the code correctly</li>
-    <li>Keep barcode images clear and sized appropriately for scanning</li>
-    <li>Use this tool to create product labels, packaging, and inventory tags</li>
-  </ul>
 
   <input id="ean-input" type="text" placeholder="Enter 12-digit number (EAN-13)" maxlength="12" />
   <button onclick="generateEAN()">Generate EAN</button>
@@ -133,6 +130,10 @@
   <a href="https://www.free-qr-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
     Try our Free QR Code Generator!
   </a>
+
+  <footer>
+    &copy; Free EAN Maker. Made with ❤️
+  </footer>
 
   <script>
     function calculateChecksum(code) {
