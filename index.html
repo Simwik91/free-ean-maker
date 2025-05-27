@@ -18,14 +18,28 @@
       padding: 2em;
       background: #f4f4f4;
       color: #333;
+      max-width: 700px;
+      margin: auto;
     }
     h1 {
-      font-size: 2em;
+      font-size: 2.2em;
       margin-bottom: 0.2em;
     }
     h2 {
       margin-top: 2em;
-      color: #666;
+      color: #444;
+    }
+    p, ul {
+      color: #555;
+      line-height: 1.5em;
+      margin: 0.6em auto 1.5em;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    ul {
+      padding-left: 1.2em;
     }
     input, button {
       margin: 0.5em auto;
@@ -66,7 +80,7 @@
       background: #ff6600;
       color: white;
       padding: 0.75em 1.5em;
-      margin: 1.5em auto 2em auto;
+      margin: 2em auto 3em auto;
       border-radius: 6px;
       text-decoration: none;
       font-weight: bold;
@@ -83,6 +97,28 @@
 </head>
 <body>
   <h1>Free EAN Code Generator</h1>
+  <p>Easily create valid EAN-13 barcodes online for your products. Just enter a 12-digit number and get a printable barcode instantly!</p>
+
+  <h2>How It Works</h2>
+  <ul>
+    <li>Input a 12-digit number (without the checksum digit)</li>
+    <li>Our tool calculates the correct checksum digit automatically</li>
+    <li>Generate the barcode image and download it as PNG</li>
+    <li>Optionally, create multiple barcodes in batch and download as a ZIP file</li>
+  </ul>
+
+  <h2>Why Use This Tool?</h2>
+  <p>
+    Whether you're a small business owner, a reseller, or managing inventory, generating EAN barcodes is quick and free. No software installation needed, works right in your browser.
+  </p>
+
+  <h2>EAN Barcode Tips</h2>
+  <ul>
+    <li>EAN-13 barcodes encode 13 digits: 12 data digits + 1 checksum</li>
+    <li>The checksum ensures barcode scanners read the code correctly</li>
+    <li>Keep barcode images clear and sized appropriately for scanning</li>
+    <li>Use this tool to create product labels, packaging, and inventory tags</li>
+  </ul>
 
   <input id="ean-input" type="text" placeholder="Enter 12-digit number (EAN-13)" maxlength="12" />
   <button onclick="generateEAN()">Generate EAN</button>
