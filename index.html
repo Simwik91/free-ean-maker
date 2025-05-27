@@ -1,205 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free EAN Barcode Generator</title>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding: 2em;
-      background: #f4f4f4;
-      color: #333;
-    }
-    h1 {
-      font-size: 2em;
-      margin-bottom: 0.2em;
-    }
-    p {
-      margin-top: 0;
-      margin-bottom: 2em;
-      color: #666;
-    }
-    input, select, button {
-      margin: 0.5em auto;
-      padding: 0.75em;
-      width: 90%;
-      max-width: 400px;
-      font-size: 1em;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      box-sizing: border-box;
-    }
-    button {
-      background-color: #007acc;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #005fa3;
-    }
-    canvas {
-      margin-top: 1em;
-      background: white;
-      padding: 1em;
-      border-radius: 6px;
-    }
-    footer {
-      margin-top: 4em;
-      font-size: 0.85em;
-      color: #888;
-    }
-    .sister-site-btn {
-      display: block;
-      background: #ff6600;
-      color: white;
-      padding: 0.75em 1.5em;
-      margin: 1em auto 2em auto;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-      max-width: 400px;
-      width: 90%;
-      box-sizing: border-box;
-      transition: background-color 0.3s ease;
-      text-align: center;
-    }
-    .sister-site-btn:hover {
-      background-color: #cc5200;
-    }
-    .batch-codes {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1em;
-      margin-top: 1.5em;
-    }
-    .batch-codes canvas {
-      background: white;
-      padding: 0.5em;
-      border-radius: 6px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Free EAN Barcode Generator</h1>
-  <p>Create EAN-13 or EAN-8 barcodes instantly and download them as PNG.</p>
+function generateEAN() {
+  const value = document.getElementById('ean-input').value.trim();
+  const canvas = document.getElementById('ean-canvas');
+  const type = document.getElementById('ean-type').value;
 
-  <select id="ean-type">
-    <option value="EAN13">EAN-13</option>
-    <option value="EAN8">EAN-8</option>
-  </select>
-  <input id="ean-input" type="text" placeholder="Enter EAN code" />
-  <br />
-  <button onclick="generateEAN()">Generate Barcode</button>
-  <br />
-  <canvas id="ean-canvas"></canvas>
-  <br />
-  <button id="download-btn" onclick="downloadEAN()" style="display:none;">Download PNG</button>
+  // Clear canvas first
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  <hr style="margin-top: 3em; margin-bottom: 2em; border: 0; border-top: 1px solid #ddd;" />
+  if (!value) return;
 
-  <h2>Generate Random EAN Barcodes</h2>
-  <select id="batch-type">
-    <option value="EAN13">EAN-13</option>
-    <option value="EAN8">EAN-8</option>
-  </select>
-  <input id="batch-count" type="number" min="1" max="100" value="10" />
-  <br />
-  <button onclick="generateBatch()">Generate Batch</button>
-  <br />
-  <div class="batch-codes" id="batch-codes"></div>
-  <br />
-  <button onclick="downloadBatch()">Download All as PNG</button>
-
-  <hr style="margin-top: 3em; margin-bottom: 2em; border: 0; border-top: 1px solid #ddd;" />
-
-  <a href="https://www.free-qr-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
-    Try our Free QR Code Generator!
-  </a>
-
-  <footer>
-    Free EAN Maker. Made with ❤️
-  </footer>
-
-  <script>
-    function generateEAN() {
-      const value = document.getElementById('ean-input').value.trim();
-      const canvas = document.getElementById('ean-canvas');
-      const type = document.getElementById('ean-type').value;
-
-      // Clear previous output
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      document.getElementById('download-btn').style.display = 'none';
-
-      if (!value) return;
-
-      try {
-        JsBarcode(canvas, value, {
-          format: type,
-          displayValue: true,
-          fontSize: 18,
-          height: 100,
-        });
-        document.getElementById('download-btn').style.display = 'inline-block';
-      } catch (e) {
-        console.error("Invalid barcode:", e);
-        alert('Invalid EAN code.');
-      }
-    }
-
-    function downloadEAN() {
-      const canvas = document.getElementById('ean-canvas');
-      const link = document.createElement('a');
-      link.download = 'ean-code.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    }
-
-    function generateRandomEAN(type) {
-      let length = type === 'EAN13' ? 12 : 7;
-      let code = '';
-      for (let i = 0; i < length; i++) {
-        code += Math.floor(Math.random() * 10);
-      }
-      return code;
-    }
-
-    function generateBatch() {
-      const type = document.getElementById('batch-type').value;
-      const count = Math.min(100, Math.max(1, parseInt(document.getElementById('batch-count').value)));
-      const container = document.getElementById('batch-codes');
-      container.innerHTML = '';
-
-      for (let i = 0; i < count; i++) {
-        const code = generateRandomEAN(type);
-        const canvas = document.createElement('canvas');
-        JsBarcode(canvas, code, {
-          format: type,
-          displayValue: true,
-          fontSize: 14,
-          height: 80,
-        });
-        container.appendChild(canvas);
-      }
-    }
-
-    function downloadBatch() {
-      const canvases = document.querySelectorAll('#batch-codes canvas');
-      canvases.forEach((canvas, i) => {
-        const link = document.createElement('a');
-        link.download = `ean-${i + 1}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      });
-    }
-  </script>
-</body>
-</html>
+  try {
+    JsBarcode(canvas, value, {
+      format: type,
+      displayValue: true,
+      fontSize: 18,
+      height: 100,
+    });
+    document.getElementById('download-btn').style.display = 'inline-block';
+  } catch (e) {
+    console.error("Invalid barcode:", e);
+    alert('Invalid EAN code.');
+  }
+}
