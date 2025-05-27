@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Free EAN Barcode Generator</title>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551"
+    crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -46,6 +46,9 @@
     }
     canvas {
       margin-top: 1em;
+      background: white;
+      padding: 1em;
+      border-radius: 6px;
     }
     footer {
       margin-top: 4em;
@@ -54,7 +57,6 @@
     }
     .sister-site-btn {
       display: block;
-      clear: both;
       background: #ff6600;
       color: white;
       padding: 0.75em 1.5em;
@@ -71,33 +73,52 @@
     .sister-site-btn:hover {
       background-color: #cc5200;
     }
+    .batch-codes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1em;
+      margin-top: 1.5em;
+    }
+    .batch-codes canvas {
+      background: white;
+      padding: 0.5em;
+      border-radius: 6px;
+    }
   </style>
 </head>
 <body>
   <h1>Free EAN Barcode Generator</h1>
-  <p>Generate EAN-13 or EAN-8 codes and download them as PNG images</p>
+  <p>Create EAN-13 or EAN-8 barcodes instantly and download them as PNG.</p>
 
   <select id="ean-type">
-    <option value="ean13">EAN-13</option>
-    <option value="ean8">EAN-8</option>
+    <option value="EAN13">EAN-13</option>
+    <option value="EAN8">EAN-8</option>
   </select>
-
-  <input id="ean-input" type="text" placeholder="Enter EAN code or leave blank to auto-generate" />
-  <button onclick="generateSingleEAN()">Generate Barcode</button>
+  <input id="ean-input" type="text" placeholder="Enter EAN code" />
+  <br />
+  <button onclick="generateEAN()">Generate Barcode</button>
   <br />
   <canvas id="ean-canvas"></canvas>
   <br />
-  <button id="download-btn" style="display:none" onclick="downloadSingleEAN()">Download PNG</button>
+  <button id="download-btn" onclick="downloadEAN()" style="display:none;">Download PNG</button>
 
-  <hr style="margin: 2em auto; width: 80%;" />
+  <hr style="margin-top: 3em; margin-bottom: 2em; border: 0; border-top: 1px solid #ddd;" />
 
-  <h2>Batch Generate EAN Codes</h2>
-  <select id="batch-ean-type">
-    <option value="ean13">EAN-13</option>
-    <option value="ean8">EAN-8</option>
+  <h2>Generate Random EAN Barcodes</h2>
+  <select id="batch-type">
+    <option value="EAN13">EAN-13</option>
+    <option value="EAN8">EAN-8</option>
   </select>
-  <input id="batch-amount" type="number" min="1" max="100" placeholder="Enter number of codes (1–100)" />
-  <button onclick="generateBatchEANs()">Download Batch as ZIP</button>
+  <input id="batch-count" type="number" min="1" max="100" value="10" />
+  <br />
+  <button onclick="generateBatch()">Generate Batch</button>
+  <br />
+  <div class="batch-codes" id="batch-codes"></div>
+  <br />
+  <button onclick="downloadBatch()">Download All as PNG</button>
+
+  <hr style="margin-top: 3em; margin-bottom: 2em; border: 0; border-top: 1px solid #ddd;" />
 
   <a href="https://www.free-qr-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
     Try our Free QR Code Generator!
@@ -108,73 +129,76 @@
   </footer>
 
   <script>
-    function calculateChecksum(code, isEAN8) {
-      const weights = isEAN8 ? [3, 1, 3, 1, 3, 1, 3] : [1, 3];
-      let sum = 0;
-      for (let i = 0; i < code.length; i++) {
-        const digit = parseInt(code[i]);
-        sum += digit * (isEAN8 ? weights[i] : weights[i % 2]);
-      }
-      const check = (10 - (sum % 10)) % 10;
-      return check;
-    }
-
-    function generateRandomEAN(isEAN8 = false) {
-      const length = isEAN8 ? 7 : 12;
-      let base = '';
-      for (let i = 0; i < length; i++) {
-        base += Math.floor(Math.random() * 10);
-      }
-      return base + calculateChecksum(base, isEAN8);
-    }
-
-    function generateSingleEAN() {
+    function generateEAN() {
+      const value = document.getElementById('ean-input').value.trim();
+      const canvas = document.getElementById('ean-canvas');
       const type = document.getElementById('ean-type').value;
-      const isEAN8 = type === 'ean8';
-      let code = document.getElementById('ean-input').value.trim();
-      if (!code) {
-        code = generateRandomEAN(isEAN8);
-        document.getElementById('ean-input').value = code;
+
+      // Clear previous output
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('download-btn').style.display = 'none';
+
+      if (!value) return;
+
+      try {
+        JsBarcode(canvas, value, {
+          format: type,
+          displayValue: true,
+          fontSize: 18,
+          height: 100,
+        });
+        document.getElementById('download-btn').style.display = 'inline-block';
+      } catch (e) {
+        console.error("Invalid barcode:", e);
+        alert('Invalid EAN code.');
       }
-      JsBarcode("#ean-canvas", code, { format: type, displayValue: true });
-      document.getElementById('download-btn').style.display = 'inline-block';
     }
 
-    function downloadSingleEAN() {
+    function downloadEAN() {
       const canvas = document.getElementById('ean-canvas');
       const link = document.createElement('a');
-      link.download = 'ean-barcode.png';
+      link.download = 'ean-code.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
 
-    async function generateBatchEANs() {
-      const type = document.getElementById('batch-ean-type').value;
-      const isEAN8 = type === 'ean8';
-      const amount = parseInt(document.getElementById('batch-amount').value);
-      if (isNaN(amount) || amount < 1 || amount > 100) {
-        alert("Please enter a number between 1 and 100.");
-        return;
+    function generateRandomEAN(type) {
+      let length = type === 'EAN13' ? 12 : 7;
+      let code = '';
+      for (let i = 0; i < length; i++) {
+        code += Math.floor(Math.random() * 10);
       }
+      return code;
+    }
 
-      const zip = new JSZip();
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+    function generateBatch() {
+      const type = document.getElementById('batch-type').value;
+      const count = Math.min(100, Math.max(1, parseInt(document.getElementById('batch-count').value)));
+      const container = document.getElementById('batch-codes');
+      container.innerHTML = '';
 
-      for (let i = 0; i < amount; i++) {
-        const code = generateRandomEAN(isEAN8);
-        JsBarcode(canvas, code, { format: type, displayValue: true });
-        const dataUrl = canvas.toDataURL('image/png');
-        const imgData = dataUrl.replace(/^data:image\/png;base64,/, "");
-        zip.file(`ean_${code}.png`, imgData, { base64: true });
+      for (let i = 0; i < count; i++) {
+        const code = generateRandomEAN(type);
+        const canvas = document.createElement('canvas');
+        JsBarcode(canvas, code, {
+          format: type,
+          displayValue: true,
+          fontSize: 14,
+          height: 80,
+        });
+        container.appendChild(canvas);
       }
+    }
 
-      const blob = await zip.generateAsync({ type: "blob" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `ean-${type}-batch.zip`;
-      link.click();
+    function downloadBatch() {
+      const canvases = document.querySelectorAll('#batch-codes canvas');
+      canvases.forEach((canvas, i) => {
+        const link = document.createElement('a');
+        link.download = `ean-${i + 1}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
     }
   </script>
 </body>
