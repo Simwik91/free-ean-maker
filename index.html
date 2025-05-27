@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free EAN Code Generator</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2em; }
+    input, button { margin: 0.5em; padding: 0.5em; width: 80%; max-width: 400px; }
+    canvas { margin-top: 1em; display: block; margin-left: auto; margin-right: auto; }
+  </style>
+</head>
+<body>
+  <h1>Free EAN Code Generator</h1>
+  <input id="ean-input" type="text" placeholder="Enter 12-digit number (EAN-13)" maxlength="12" />
+  <button onclick="generateEAN()">Generate EAN</button>
+
+  <h2>Batch Generate EANs</h2>
+  <input id="ean-count" type="number" placeholder="Number of EANs to generate" min="1" max="100" />
+  <button onclick="generateAndDownloadBatch()">Generate & Download as ZIP</button>
+
+  <canvas id="ean-canvas" width="300" height="150"></canvas>
+
+  <script>
+    function calculateChecksum(code) {
+      let sum = 0;
+      for (let i = 0; i < code.length; i++) {
+        sum += parseInt(code[i]) * (i % 2 === 0 ? 1 : 3);
+      }
+      return (10 - (sum % 10)) % 10;
+    }
+
+    function generateEAN() {
+      const value = document.getElementById('ean-input').value;
+      if (!/^\d{12}$/.test(value)) {
+        alert('Please enter exactly 12 digits');
+        return;
+      }
+      const fullCode = value + calculateChecksum(value);
+      renderEANToCanvas(fullCode);
+    }
+
+    function renderEANToCanvas(code, canvasId = 'ean-canvas') {
+      const canvas = document.getElementById(canvasId);
+      JsBarcode(canvas, code, { format: 'ean13', displayValue: true });
+    }
+
+    function generateAndDownloadBatch() {
+      const count = parseInt(document.getElementById('ean-count').value);
+      if (isNaN(count) || count < 1 || count > 100) {
+        alert('Please enter a number between 1 and 100');
+        return;
+      }
+
+      const zip = new JSZip();
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = 300;
+      tempCanvas.height = 150;
+
+      const context = tempCanvas.getContext('2d');
+      const promises = [];
+
+      for (let i = 0; i < count; i++) {
+        const base = Math.floor(Math.random() * 1e12).toString().padStart(12, '0');
+        const fullCode = base + calculateChecksum(base);
+
+        JsBarcode(tempCanvas, fullCode, { format: 'ean13', displayValue: true });
+
+        promises.push(new Promise((resolve) => {
+          tempCanvas.toBlob((blob) => {
+            zip.file(`${fullCode}.png`, blob);
+            resolve();
+          }, 'image/png');
+        }));
+      }
+
+      Promise.all(promises).then(() => {
+        zip.generateAsync({ type: 'blob' }).then((content) => {
+          saveAs(content, 'ean-codes.zip');
+        });
+      });
+    }
+  </script>
+</body>
+</html>
