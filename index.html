@@ -2,151 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Free EAN Barcode Generator</title>
-
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Free EAN Code Maker</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding: 2em;
-      background: #f4f4f4;
-      color: #333;
+      font-family: sans-serif;
+      margin: 2rem;
+      line-height: 1.6;
     }
-    h1, h2 {
-      margin-bottom: 0.5em;
-    }
-    p {
-      margin-top: 0;
-      margin-bottom: 2em;
-      color: #666;
-    }
-    input, select, button {
-      margin: 0.5em auto;
-      padding: 0.75em;
-      width: 90%;
+    input, textarea, button {
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      font-size: 1rem;
+      width: 100%;
       max-width: 400px;
-      font-size: 1em;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      display: block;
-    }
-    button {
-      background-color: #007acc;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover {
-      background-color: #005fa3;
     }
     svg {
-      margin: 1em auto;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background: white;
-      width: 300px;
-      height: 150px;
+      margin-top: 1rem;
+    }
+    #download-single-btn {
       display: none;
-    }
-    .download-btn {
-      background-color: #28a745;
-      margin-top: 0.5em;
-      max-width: 200px;
-    }
-    .download-btn:hover {
-      background-color: #1e7e34;
-    }
-    .batch-section {
-      margin-top: 3em;
-      border-top: 2px solid #ccc;
-      padding-top: 2em;
-    }
-    label {
-      font-weight: bold;
-      text-align: left;
-      display: block;
-      max-width: 400px;
-      margin: 0.5em auto 0.2em auto;
-    }
-    footer {
-      margin-top: 4em;
-      font-size: 0.85em;
-      color: #888;
-    }
-    .sister-site-btn {
-      display: block;
-      background: #ff6600;
-      color: white;
-      padding: 0.75em 1.5em;
-      margin: 2em auto;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-      max-width: 400px;
-      width: 90%;
-    }
-    .sister-site-btn:hover {
-      background-color: #cc5200;
     }
   </style>
 </head>
 <body>
-  <h1>Free EAN Barcode Generator</h1>
-  <p>Create valid EAN-8 or EAN-13 barcodes individually or in bulk, completely free!</p>
+  <h1>Free EAN Code Maker</h1>
+  <p>Generate valid EAN-8 or EAN-13 barcodes one by one or in batches — completely free and ready to download as PNG.</p>
 
-  <h2>Single EAN Barcode</h2>
-  <label for="ean-input">Enter 7 digits for EAN-8 or 12 digits for EAN-13:</label>
-  <input id="ean-input" type="text" placeholder="e.g., 1234567 or 123456789012" maxlength="12" />
-  <button onclick="handleSingleGenerate()">Generate & Download Single Barcode</button>
+  <h2>Single EAN Code Maker</h2>
+  <input id="ean-input" type="text" placeholder="Enter 7 digits for EAN-8 or 12 digits for EAN-13" maxlength="12" />
+  <button onclick="handleSingleGenerate()">Generate Barcode</button>
+  <button id="download-single-btn">Download PNG</button>
+  <svg id="ean-svg"></svg>
 
-  <svg id="ean-svg" aria-label="EAN barcode"></svg>
-  <button id="download-single-btn" class="download-btn" style="display:none;">Download Barcode PNG</button>
+  <hr>
 
-  <div class="batch-section">
-    <h2>Batch Barcode Generator</h2>
-
-    <label for="ean-type-batch">Choose Barcode Type:</label>
-    <select id="ean-type-batch">
-      <option value="ean13">EAN-13 (12-digit base)</option>
-      <option value="ean8">EAN-8 (7-digit base)</option>
-    </select>
-
-    <label for="ean-count">Number of Barcodes to Generate (1–100):</label>
-    <input id="ean-count" type="number" placeholder="e.g., 10" min="1" max="100" />
-
-    <button onclick="generateAndDownloadBatch()">Generate & Download Batch ZIP</button>
-  </div>
-
-  <a href="https://www.free-qr-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
-    Try Our Free QR Code Generator!
-  </a>
-
-  <footer>
-    &copy; Free EAN Maker. Made with ❤️
-  </footer>
+  <h2>Batch EAN Code Maker</h2>
+  <textarea id="ean-list" rows="5" placeholder="Enter one EAN code per line (7 or 12 digits only)"></textarea>
+  <button onclick="handleBatchGenerate()">Generate & Download All</button>
 
   <script>
     function calculateChecksum(code) {
       let sum = 0;
       for (let i = 0; i < code.length; i++) {
-        sum += parseInt(code[i]) * (i % 2 === 0 ? 1 : 3);
+        const digit = parseInt(code[i], 10);
+        if ((code.length - i) % 2 === 0) {
+          sum += digit * 3;
+        } else {
+          sum += digit;
+        }
       }
-      return (10 - (sum % 10)) % 10;
-    }
-
-    function renderEANToSVG(code, format) {
-      const svg = document.getElementById('ean-svg');
-      svg.style.display = 'block';
-      svg.innerHTML = '';
-      JsBarcode(svg, code, { format, displayValue: true, width: 2, height: 100 });
+      const checksum = (10 - (sum % 10)) % 10;
+      return checksum.toString();
     }
 
     function svgToPngBlob(svgElement) {
@@ -154,51 +62,60 @@
         const svgData = new XMLSerializer().serializeToString(svgElement);
         const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
         const url = URL.createObjectURL(svgBlob);
-        const img = new Image();
-        img.onload = () => {
+        const image = new Image();
+        image.onload = function () {
           const canvas = document.createElement('canvas');
-          canvas.width = 300;
-          canvas.height = 150;
-          const ctx = canvas.getContext('2d');
-          ctx.fillStyle = 'white';
-          ctx.fillRect(0, 0, 300, 150);
-          ctx.drawImage(img, 0, 0);
-          URL.revokeObjectURL(url);
-          canvas.toBlob(resolve, 'image/png');
+          canvas.width = image.width;
+          canvas.height = image.height;
+          const context = canvas.getContext('2d');
+          context.drawImage(image, 0, 0);
+          canvas.toBlob(blob => {
+            resolve(blob);
+            URL.revokeObjectURL(url);
+          }, 'image/png');
         };
-        img.onerror = reject;
-        img.src = url;
+        image.onerror = reject;
+        image.src = url;
       });
     }
 
     function handleSingleGenerate() {
-      const input = document.getElementById('ean-input').value.trim();
+      const input = document.getElementById('ean-input');
+      const value = input.value.trim();
       const downloadBtn = document.getElementById('download-single-btn');
+      const svgDisplay = document.getElementById('ean-svg');
 
-      if (!/^\d+$/.test(input)) {
-        alert('Only digits are allowed.');
+      downloadBtn.style.display = 'none';
+      svgDisplay.innerHTML = '';
+
+      if (!/^\d+$/.test(value)) {
+        alert('Please enter digits only.');
         return;
       }
 
-      let format = '', base = '';
-      if (input.length === 7) {
+      let format = '';
+      if (value.length === 7) {
         format = 'ean8';
-        base = input;
-      } else if (input.length === 12) {
+      } else if (value.length === 12) {
         format = 'ean13';
-        base = input;
       } else {
-        alert('Please enter exactly 7 digits (EAN-8) or 12 digits (EAN-13).');
+        alert('Enter 7 digits for EAN-8 or 12 digits for EAN-13.');
         return;
       }
 
-      const fullCode = base + calculateChecksum(base);
-      renderEANToSVG(fullCode, format);
+      const fullCode = value + calculateChecksum(value);
 
+      // Render in temp SVG
+      const tempSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      JsBarcode(tempSvg, fullCode, { format, displayValue: true, width: 2, height: 100 });
+
+      // Copy to visible SVG
+      svgDisplay.innerHTML = tempSvg.innerHTML;
+
+      // Show download button
       downloadBtn.style.display = 'inline-block';
       downloadBtn.onclick = () => {
-        const svg = document.getElementById('ean-svg');
-        svgToPngBlob(svg).then(blob => {
+        svgToPngBlob(tempSvg).then(blob => {
           const link = document.createElement('a');
           link.href = URL.createObjectURL(blob);
           link.download = `${fullCode}.png`;
@@ -209,42 +126,45 @@
       };
     }
 
-    function generateRandomBase(length) {
-      return Math.floor(Math.random() * Math.pow(10, length)).toString().padStart(length, '0');
-    }
+    function handleBatchGenerate() {
+      const input = document.getElementById('ean-list').value.trim();
+      const lines = input.split('\n').map(l => l.trim()).filter(Boolean);
 
-    function generateAndDownloadBatch() {
-      const count = parseInt(document.getElementById('ean-count').value);
-      const type = document.getElementById('ean-type-batch').value;
-      const baseLength = type === 'ean13' ? 12 : 7;
-
-      if (isNaN(count) || count < 1 || count > 100) {
-        alert('Enter a number between 1 and 100.');
+      if (lines.length === 0) {
+        alert('Please enter one code per line.');
         return;
       }
 
-      const zip = new JSZip();
-      const tasks = [];
+      lines.forEach((line, index) => {
+        if (!/^\d+$/.test(line)) {
+          alert(`Line ${index + 1} is invalid. Only digits are allowed.`);
+          return;
+        }
 
-      for (let i = 0; i < count; i++) {
-        const base = generateRandomBase(baseLength);
-        const code = base + calculateChecksum(base);
+        let format = '';
+        if (line.length === 7) {
+          format = 'ean8';
+        } else if (line.length === 12) {
+          format = 'ean13';
+        } else {
+          alert(`Line ${index + 1} must be 7 or 12 digits.`);
+          return;
+        }
 
+        const fullCode = line + calculateChecksum(line);
+
+        // Create temporary SVG
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('width', '300');
-        svg.setAttribute('height', '150');
-        JsBarcode(svg, code, { format: type, displayValue: true, width: 2, height: 100 });
+        JsBarcode(svg, fullCode, { format, displayValue: true, width: 2, height: 100 });
 
-        tasks.push(
-          svgToPngBlob(svg).then(blob => {
-            zip.file(`${code}.png`, blob);
-          })
-        );
-      }
-
-      Promise.all(tasks).then(() => {
-        zip.generateAsync({ type: 'blob' }).then(content => {
-          saveAs(content, `${type}-barcodes.zip`);
+        // Download as PNG
+        svgToPngBlob(svg).then(blob => {
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = `${fullCode}.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
         });
       });
     }
