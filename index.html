@@ -133,10 +133,14 @@
       const type = document.getElementById('ean-type').value;
       const isEAN8 = type === 'ean8';
       let code = document.getElementById('ean-input').value.trim();
-      if (!code) {
+
+      // Always generate new code if input is empty OR input value is not valid length
+      const expectedLength = isEAN8 ? 8 : 13;
+      if (code.length !== expectedLength) {
         code = generateRandomEAN(isEAN8);
         document.getElementById('ean-input').value = code;
       }
+
       JsBarcode("#ean-canvas", code, { format: type, displayValue: true });
       document.getElementById('download-btn').style.display = 'inline-block';
     }
