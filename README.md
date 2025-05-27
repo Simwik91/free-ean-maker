@@ -1,12 +1,10 @@
-html file for the site
+## Third-Party Libraries and Licenses
+
+This project uses the following open-source libraries:
+
+- **JsBarcode** — Barcode generation library  
+  License: [MIT License](https://github.com/lindell/JsBarcode/blob/master/LICENSE)  
+  Source: https://github.com/lindell/JsBarcode
 
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+libraries are licensed under the MIT License, which permits free use, modification, and distribution provided the license text is included.
