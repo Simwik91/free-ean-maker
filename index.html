@@ -15,7 +15,9 @@
   </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax
+
+/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -97,7 +99,7 @@
   </select>
 
   <input id="ean-input" type="text" placeholder="Enter barcode or leave blank to auto-generate" />
-  <button onclick="generateSingleEAN()">Generate Barcode</button>
+  <button onclick="generateSingleEAN()">Generate New Barcode</button>
   <br />
   <canvas id="ean-canvas"></canvas>
   <br />
@@ -177,7 +179,6 @@
         case 'codabar':
           return 'A' + Math.floor(Math.random() * 100000).toString().padStart(5, '0') + 'B';
         case 'pharmacode':
-          // Generate a number between 3 and 131070 for Pharmacode
           return Math.floor(Math.random() * (131070 - 3 + 1) + 3).toString();
         default:
           return '123456';
@@ -189,9 +190,15 @@
       const input = document.getElementById('ean-input');
       const canvas = document.getElementById('ean-canvas');
       const ctx = canvas.getContext('2d');
+      
+      // Fully reset canvas
+      canvas.width = 0; // Force reset
+      canvas.height = 0;
+      canvas.width = 400; // Set reasonable default width
+      canvas.height = type === 'pharmacode' ? 100 : 150; // Adjust height for Pharmacode
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let code = input.value.trim();
 
+      let code = input.value.trim();
       // Clear the input field
       input.value = '';
 
@@ -215,12 +222,9 @@
       }
 
       try {
-        // Ensure canvas is reset before rendering
-        canvas.width = canvas.width; // Reset canvas size
         JsBarcode('#ean-canvas', code, { 
           format: type === 'upc' ? 'upc' : type, 
           displayValue: true,
-          // Ensure Pharmacode renders correctly
           width: type === 'pharmacode' ? 2 : 2,
           height: type === 'pharmacode' ? 50 : 100
         });
@@ -251,7 +255,6 @@
 
       for (let i = 0; i < amount; i++) {
         let code = generateRandomBarcode(type);
-        // Ensure Pharmacode is valid
         if (type === 'pharmacode') {
           const numCode = parseInt(code);
           if (isNaN(numCode) || numCode < 3 || numCode > 131070) {
