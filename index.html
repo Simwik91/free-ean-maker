@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Generate barcodes including EAN-13, EAN-8, Codabar, Pharmacode, and more. Download as PNG, SVG, or JPEG. Free, fast, no signup.">
+  <meta name="description" content="Generate barcodes including EAN-13, EAN-8, Codabar, Pharmacode, and more. Download as PNG or JPEG. Free, fast, no signup.">
   <title>Free Barcode Generator</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-C4SSJKXG4Z"></script>
@@ -53,7 +53,7 @@
     button:hover {
       background-color: #005fa3;
     }
-    canvas, #svg-container {
+    canvas {
       margin: 1em auto;
       display: block;
       max-width: 400px;
@@ -84,7 +84,7 @@
 </head>
 <body>
   <h1>Free Barcode Generator</h1>
-  <p>Generate EAN, Codabar, Pharmacode, and other barcodes as PNG, SVG, or JPEG images</p>
+  <p>Generate EAN, Codabar, Pharmacode, and other barcodes as PNG or JPEG images</p>
 
   <select id="ean-type">
     <option value="ean13" selected>EAN-13</option>
@@ -101,13 +101,11 @@
   <input id="ean-input" type="text" placeholder="Enter barcode or leave blank to auto-generate" />
   <select id="file-format">
     <option value="png" selected>PNG</option>
-    <option value="svg">SVG</option>
     <option value="jpeg">JPEG</option>
   </select>
   <button onclick="generateSingleEAN()">Generate New Barcode</button>
   <br />
   <canvas id="ean-canvas" style="display: none;"></canvas>
-  <div id="svg-container" style="margin-top: 1em; display: none;"></div>
   <br />
   <button id="download-btn" style="display:none" onclick="downloadSingleEAN()">Download</button>
 
@@ -128,7 +126,6 @@
   <input id="batch-amount" type="number" min="1" max="100" placeholder="Enter number of codes (1–100)" />
   <select id="batch-file-format">
     <option value="png" selected>PNG</option>
-    <option value="svg">SVG</option>
     <option value="jpeg">JPEG</option>
   </select>
   <button onclick="generateBatchEANs()">Download Batch as ZIP</button>
@@ -201,24 +198,17 @@
       const format = document.getElementById('file-format').value;
       const input = document.getElementById('ean-input');
       const canvas = document.getElementById('ean-canvas');
-      const svgContainer = document.getElementById('svg-container');
       const ctx = canvas.getContext('2d');
       
-      // Reset canvas and SVG container
+      // Reset canvas
       canvas.width = 0;
       canvas.height = 0;
       canvas.style.display = 'none';
-      svgContainer.innerHTML = '';
-      svgContainer.style.display = 'none';
       
-      if (format !== 'svg') {
-        canvas.width = 400;
-        canvas.height = type === 'pharmacode' ? 100 : 150;
-        canvas.style.display = 'block';
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      } else {
-        svgContainer.style.display = 'block';
-      }
+      canvas.width = 400;
+      canvas.height = type === 'pharmacode' ? 100 : 150;
+      canvas.style.display = 'block';
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       let code = input.value.trim();
       input.value = '';
@@ -242,13 +232,11 @@
       }
 
       try {
-        const target = format === 'svg' ? '#svg-container' : '#ean-canvas';
-        JsBarcode(target, code, { 
+        JsBarcode('#ean-canvas', code, { 
           format: type === 'upc' ? 'upc' : type, 
           displayValue: true,
           width: type === 'pharmacode' ? 2 : 2,
-          height: type === 'pharmacode' ? 50 : 100,
-          xmlDeclaration: format === 'svg'
+          height: type === 'pharmacode' ? 50 : 100
         });
         document.getElementById('download-btn').style.display = 'inline-block';
       } catch (err) {
@@ -259,23 +247,10 @@
     function downloadSingleEAN() {
       const format = document.getElementById('file-format').value;
       const canvas = document.getElementById('ean-canvas');
-      const svgContainer = document.getElementById('svg-container');
       const link = document.createElement('a');
-
-      if (format === 'svg') {
-        const svg = svgContainer.querySelector('svg');
-        if (svg) {
-          const serializer = new XMLSerializer();
-          const svgString = serializer.serializeToString(svg);
-          link.download = 'barcode.svg';
-          link.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
-          link.click();
-        }
-      } else {
-        link.download = `barcode.${format}`;
-        link.href = canvas.toDataURL(`image/${format === 'jpeg' ? 'jpeg' : 'png'}`, format === 'jpeg' ? 0.9 : 1.0);
-        link.click();
-      }
+      link.download = `barcode.${format}`;
+      link.href = canvas.toDataURL(`image/${format === 'jpeg' ? 'jpeg' : 'png'}`, format === 'jpeg' ? 0.9 : 1.0);
+      link.click();
     }
 
     async function generateBatchEANs() {
@@ -289,7 +264,6 @@
 
       const zip = new JSZip();
       const canvas = document.createElement('canvas');
-      const tempSvgContainer = document.createElement('div');
 
       for (let i = 0; i < amount; i++) {
         let code = generateRandomBarcode(type);
@@ -300,32 +274,17 @@
           }
         }
         try {
-          if (format === 'svg') {
-            JsBarcode(tempSvgContainer, code, { 
-              format: type === 'upc' ? 'upc' : type, 
-              displayValue: true,
-              width: type === 'pharmacode' ? 2 : 2,
-              height: type === 'pharmacode' ? 50 : 100,
-              xmlDeclaration: true
-            });
-            const svg = tempSvgContainer.querySelector('svg');
-            const serializer = new XMLSerializer();
-            const svgString = serializer.serializeToString(svg);
-            zip.file(`${type}_${code}.svg`, svgString);
-            tempSvgContainer.innerHTML = '';
-          } else {
-            canvas.width = 400;
-            canvas.height = type === 'pharmacode' ? 100 : 150;
-            JsBarcode(canvas, code, { 
-              format: type === 'upc' ? 'upc' : type, 
-              displayValue: true,
-              width: type === 'pharmacode' ? 2 : 2,
-              height: type === 'pharmacode' ? 50 : 100
-            });
-            const dataUrl = canvas.toDataURL(`image/${format === 'jpeg' ? 'jpeg' : 'png'}`, format === 'jpeg' ? 0.9 : 1.0);
-            const imgData = dataUrl.replace(/^data:image\/(png|jpeg);base64,/, '');
-            zip.file(`${type}_${code}.${format}`, imgData, { base64: true });
-          }
+          canvas.width = 400;
+          canvas.height = type === 'pharmacode' ? 100 : 150;
+          JsBarcode(canvas, code, { 
+            format: type === 'upc' ? 'upc' : type, 
+            displayValue: true,
+            width: type === 'pharmacode' ? 2 : 2,
+            height: type === 'pharmacode' ? 50 : 100
+          });
+          const dataUrl = canvas.toDataURL(`image/${format === 'jpeg' ? 'jpeg' : 'png'}`, format === 'jpeg' ? 0.9 : 1.0);
+          const imgData = dataUrl.replace(/^data:image\/(png|jpeg);base64,/, '');
+          zip.file(`${type}_${code}.${format}`, imgData, { base64: true });
         } catch (err) {
           console.warn(`Skipped code ${code}: ${err.message}`);
         }
@@ -335,7 +294,7 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `batch-${type}.${format === 'svg' ? 'zip' : format === 'jpeg' ? 'zip' : 'zip'}`;
+      link.download = `batch-${type}.zip`;
       link.click();
     }
   </script>
