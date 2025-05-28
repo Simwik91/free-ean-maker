@@ -53,8 +53,10 @@
     button:hover {
       background-color: #005fa3;
     }
-    canvas {
-      margin-top: 1em;
+    canvas, #svg-container {
+      margin: 1em auto;
+      display: block;
+      max-width: 400px;
     }
     footer {
       margin-top: 4em;
@@ -246,7 +248,7 @@
           displayValue: true,
           width: type === 'pharmacode' ? 2 : 2,
           height: type === 'pharmacode' ? 50 : 100,
-          xmlDeclaration: format === 'svg' // Include XML declaration for SVG
+          xmlDeclaration: format === 'svg'
         });
         document.getElementById('download-btn').style.display = 'inline-block';
       } catch (err) {
