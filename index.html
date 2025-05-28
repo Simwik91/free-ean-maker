@@ -151,30 +151,23 @@
 
     function generateRandomBarcode(type) {
       switch (type) {
-        case "ean13":
-          return generateRandomEAN(false);
-        case "ean8":
-          return generateRandomEAN(true);
+        case "ean13": return generateRandomEAN(false);
+        case "ean8": return generateRandomEAN(true);
         case "code128":
         case "code39":
-        case "msi":
-          return Math.random().toString().slice(2, 12);
-        case "upc":
-          return Math.random().toString().slice(2, 14).padStart(12, '0');
-        case "itf14":
-          return Math.random().toString().slice(2, 17).padStart(14, '0');
-        case "codabar":
-          return 'A' + Math.floor(Math.random() * 100000).toString().padStart(5, '0') + 'B';
-        case "pharmacode":
-          return Math.floor(Math.random() * 89999 + 10000).toString();
-        default:
-          return "123456";
+        case "msi": return Math.random().toString().slice(2, 12);
+        case "upc": return Math.random().toString().slice(2, 14).padStart(12, '0');
+        case "itf14": return Math.random().toString().slice(2, 16).padStart(14, '0');
+        case "codabar": return 'A' + Math.floor(Math.random() * 100000).toString().padStart(5, '0') + 'B';
+        case "pharmacode": return (Math.floor(Math.random() * 89999) + 10000).toString();
+        default: return "123456";
       }
     }
 
     function generateSingleEAN() {
       const type = document.getElementById('ean-type').value;
       const input = document.getElementById('ean-input');
+      const canvas = document.getElementById('ean-canvas');
       let code = input.value.trim();
       const isEAN8 = type === "ean8";
       const expectedLength = isEAN8 ? 8 : (type === "ean13" ? 13 : null);
@@ -184,11 +177,17 @@
         input.value = code;
       }
 
+      const context = canvas.getContext('2d');
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
       try {
-        JsBarcode("#ean-canvas", code, { format: type, displayValue: true });
+        JsBarcode(canvas, code, { format: type, displayValue: true });
         document.getElementById('download-btn').style.display = 'inline-block';
       } catch (err) {
         alert("Failed to generate barcode: " + err.message);
+        input.value = '';
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById('download-btn').style.display = 'none';
       }
     }
 
@@ -214,6 +213,8 @@
       for (let i = 0; i < amount; i++) {
         const code = generateRandomBarcode(type);
         try {
+          const ctx = canvas.getContext('2d');
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
           JsBarcode(canvas, code, { format: type, displayValue: true });
           const dataUrl = canvas.toDataURL('image/png');
           const imgData = dataUrl.replace(/^data:image\/png;base64,/, "");
