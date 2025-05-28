@@ -7,13 +7,12 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-C4SSJKXG4Z');
   </script> 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Generate EAN-13 or EAN-8 barcodes online for free. Download your barcode as a PNG or ZIP. Simple, fast, and no signup needed.">
-  <title>Free EAN Barcode Generator</title>
+  <meta name="description" content="Generate various barcode formats like EAN, UPC, Code128, and more online. Download PNG or ZIP. No signup needed.">
+  <title>Free Online Barcode Generator</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
@@ -85,30 +84,52 @@
   </style>
 </head>
 <body>
-  <h1>Free EAN Barcode Generator</h1>
-  <p>Generate EAN-13 or EAN-8 codes and download them as PNG images</p>
+  <h1>Free Online Barcode Generator</h1>
+  <p>Generate barcodes in multiple formats like EAN, CODE128, UPC, and more</p>
 
   <select id="ean-type">
-    <option value="ean13">EAN-13</option>
-    <option value="ean8">EAN-8</option>
+    <option value="CODE128">CODE128</option>
+    <option value="CODE128A">CODE128A</option>
+    <option value="CODE128B">CODE128B</option>
+    <option value="CODE128C">CODE128C</option>
+    <option value="EAN13">EAN-13</option>
+    <option value="EAN8">EAN-8</option>
+    <option value="UPC">UPC</option>
+    <option value="CODE39">CODE39</option>
+    <option value="ITF14">ITF-14</option>
+    <option value="MSI">MSI</option>
+    <option value="Pharmacode">Pharmacode</option>
+    <option value="Codabar">Codabar</option>
   </select>
 
-  <input id="ean-input" type="text" placeholder="Enter EAN code or leave blank to auto-generate" />
-  <button onclick="generateSingleEAN()">Generate Barcode</button>
+  <input id="ean-input" type="text" placeholder="Enter code or leave blank to auto-generate" />
+  <button onclick="generateSingleBarcode()">Generate Barcode</button>
   <br />
   <canvas id="ean-canvas"></canvas>
   <br />
-  <button id="download-btn" style="display:none" onclick="downloadSingleEAN()">Download PNG</button>
+  <button id="download-btn" style="display:none" onclick="downloadSingleBarcode()">Download PNG</button>
 
   <hr style="margin: 2em auto; width: 80%;" />
 
-  <h2>Batch Generate EAN Codes</h2>
+  <h2>Batch Generate Barcodes</h2>
+  <p>Select a format and download up to 100 barcodes in a ZIP</p>
+
   <select id="batch-ean-type">
-    <option value="ean13">EAN-13</option>
-    <option value="ean8">EAN-8</option>
+    <option value="CODE128">CODE128</option>
+    <option value="CODE128A">CODE128A</option>
+    <option value="CODE128B">CODE128B</option>
+    <option value="CODE128C">CODE128C</option>
+    <option value="EAN13">EAN-13</option>
+    <option value="EAN8">EAN-8</option>
+    <option value="UPC">UPC</option>
+    <option value="CODE39">CODE39</option>
+    <option value="ITF14">ITF-14</option>
+    <option value="MSI">MSI</option>
+    <option value="Pharmacode">Pharmacode</option>
+    <option value="Codabar">Codabar</option>
   </select>
   <input id="batch-amount" type="number" min="1" max="100" placeholder="Enter number of codes (1–100)" />
-  <button onclick="generateBatchEANs()">Download Batch as ZIP</button>
+  <button onclick="generateBatchBarcodes()">Download Batch as ZIP</button>
   
   <hr style="margin-top: 3em; margin-bottom: 2em; border: 0; border-top: 1px solid #ddd;" />
   <a href="https://www.free-qr-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
@@ -131,24 +152,32 @@
       return check;
     }
 
-    function generateRandomEAN(isEAN8 = false) {
-      const length = isEAN8 ? 7 : 12;
+    function generateRandomCode(type) {
+      let length;
+      switch (type) {
+        case "EAN8": length = 7; break;
+        case "EAN13":
+        case "UPC": length = 12; break;
+        case "ITF14": length = 13; break;
+        default: length = 10;
+      }
       let base = '';
       for (let i = 0; i < length; i++) {
         base += Math.floor(Math.random() * 10);
       }
-      return base + calculateChecksum(base, isEAN8);
+      if (type === "EAN8" || type === "EAN13") {
+        base += calculateChecksum(base, type === "EAN8");
+      }
+      return base;
     }
 
-    function generateSingleEAN() {
+    function generateSingleBarcode() {
       const type = document.getElementById('ean-type').value;
-      const isEAN8 = type === 'ean8';
       let code = document.getElementById('ean-input').value.trim();
+      const expectedLength = (type === "EAN8") ? 8 : (type === "EAN13" || type === "UPC") ? 13 : null;
 
-      // Always generate new code if input is empty OR input value is not valid length
-      const expectedLength = isEAN8 ? 8 : 13;
-      if (code.length !== expectedLength) {
-        code = generateRandomEAN(isEAN8);
+      if (!code || (expectedLength && code.length !== expectedLength)) {
+        code = generateRandomCode(type);
         document.getElementById('ean-input').value = code;
       }
 
@@ -156,17 +185,16 @@
       document.getElementById('download-btn').style.display = 'inline-block';
     }
 
-    function downloadSingleEAN() {
+    function downloadSingleBarcode() {
       const canvas = document.getElementById('ean-canvas');
       const link = document.createElement('a');
-      link.download = 'ean-barcode.png';
+      link.download = 'barcode.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
 
-    async function generateBatchEANs() {
+    async function generateBatchBarcodes() {
       const type = document.getElementById('batch-ean-type').value;
-      const isEAN8 = type === 'ean8';
       const amount = parseInt(document.getElementById('batch-amount').value);
       if (isNaN(amount) || amount < 1 || amount > 100) {
         alert("Please enter a number between 1 and 100.");
@@ -178,18 +206,18 @@
       const ctx = canvas.getContext('2d');
 
       for (let i = 0; i < amount; i++) {
-        const code = generateRandomEAN(isEAN8);
+        const code = generateRandomCode(type);
         JsBarcode(canvas, code, { format: type, displayValue: true });
         const dataUrl = canvas.toDataURL('image/png');
         const imgData = dataUrl.replace(/^data:image\/png;base64,/, "");
-        zip.file(`ean_${code}.png`, imgData, { base64: true });
+        zip.file(`barcode_${code}.png`, imgData, { base64: true });
       }
 
       const blob = await zip.generateAsync({ type: "blob" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `ean-${type}-batch.zip`;
+      link.download = `barcode-${type}-batch.zip`;
       link.click();
     }
   </script>
