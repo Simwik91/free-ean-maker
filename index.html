@@ -417,6 +417,7 @@
     const singleSuccess = document.getElementById('single-success');
     const batchSuccess = document.getElementById('batch-success');
     const customSuccess = document.getElementById('custom-success');
+    const eanInput = document.getElementById('ean-input');
     
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
@@ -431,7 +432,7 @@
       });
       
       // Generate on Enter key
-      document.getElementById('ean-input').addEventListener('keypress', function(e) {
+      eanInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
           generateSingleEAN();
         }
@@ -522,7 +523,6 @@
     // Generate single EAN
     function generateSingleEAN() {
       const type = document.getElementById('ean-type').value;
-      const input = document.getElementById('ean-input');
       const ctx = singleCanvas.getContext('2d');
       
       // Reset
@@ -540,8 +540,7 @@
         singleCanvas.height = type === 'pharmacode' ? 100 : 150;
         ctx.clearRect(0, 0, singleCanvas.width, singleCanvas.height);
 
-        let code = input.value.trim();
-        input.value = '';
+        let code = eanInput.value.trim();
 
         const expectedLength = {
           ean13: 13,
@@ -550,16 +549,18 @@
           itf14: 14
         }[type] || null;
 
+        // Clear input only if we're generating a new barcode
         if (type === 'pharmacode') {
           const numCode = parseInt(code);
           if (!code || isNaN(numCode) || numCode < 3 || numCode > 131070) {
             code = generateRandomBarcode(type);
-            input.value = code;
           }
         } else if (!code || (expectedLength && code.length !== expectedLength)) {
           code = generateRandomBarcode(type);
-          input.value = code;
         }
+
+        // Clear the input field to prepare for next generation
+        eanInput.value = '';
 
         try {
           let format = type;
