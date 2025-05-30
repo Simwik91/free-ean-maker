@@ -4,6 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Generate barcodes including EAN-13, EAN-8, Codabar, Pharmacode, and more. Download as PNG or JPEG. Free, fast, no signup.">
+  <meta name="keywords" content="barcode generator, free barcode, create barcode, download barcode, ean code">
+  <meta name="author" content="Free Barcode Maker">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.free-ean-maker.com/">
+  <meta property="og:title" content="Free Barcode Generator">
+  <meta property="og:description" content="Create and download barcodes instantly for free. No signup required.">
+  <meta property="og:image" content="https://www.free-ean-maker.com/preview.jpg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://www.free-ean-maker.com/">
+  <meta property="twitter:title" content="Free Barcode Generator">
+  <meta property="twitter:description" content="Create and download barcodes instantly for free. No signup required.">
+  <meta property="twitter:image" content="https://www.free-ean-maker.com/preview.jpg">
+  
   <title>Free Barcode Generator</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-C4SSJKXG4Z"></script>
@@ -16,24 +33,46 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
       padding: 2em;
       background: #f4f4f4;
       color: #333;
+      line-height: 1.6;
     }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
     h1 {
-      font-size: 2em;
-      margin-bottom: 0.2em;
+      font-size: 2.2em;
+      margin-bottom: 0.3em;
+      color: #005fa3;
     }
+    
+    h2 {
+      font-size: 1.5em;
+      margin: 1.5em 0 0.8em;
+      color: #007acc;
+    }
+    
     p {
-      margin-top: 0;
-      margin-bottom: 2em;
+      margin: 0.5em 0 1.5em;
       color: #666;
     }
-    input, select, button {
+    
+    input, select, button, textarea {
       margin: 0.5em auto;
       padding: 0.75em;
       width: 90%;
@@ -42,27 +81,39 @@
       border-radius: 6px;
       border: 1px solid #ccc;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      box-sizing: border-box;
+      display: block;
     }
+    
     button {
       background-color: #007acc;
       color: white;
       border: none;
       cursor: pointer;
+      transition: all 0.3s;
     }
+    
     button:hover {
       background-color: #005fa3;
     }
+    
     canvas {
-      margin: 1em auto;
+      margin: 1.5em auto;
       display: block;
-      max-width: 400px;
+      max-width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      padding: 10px;
     }
+    
     footer {
-      margin-top: 4em;
+      margin-top: 3em;
+      padding-top: 2em;
       font-size: 0.85em;
       color: #888;
+      border-top: 1px solid #ddd;
     }
+    
     .sister-site-btn {
       display: block;
       background: #ff6600;
@@ -77,90 +128,302 @@
       transition: background-color 0.3s ease;
       text-align: center;
     }
+    
     .sister-site-btn:hover {
       background-color: #cc5200;
     }
+    
     .sister-tools-section {
-      margin: 2em auto;
+      margin: 3em auto;
     }
-    .sister-tools-section h2 {
-      font-size: 1.8em;
-      color: #333;
+    
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin: 1em 0 2em;
+      gap: 5px;
+      flex-wrap: wrap;
     }
-    .sister-tools-section p {
-      font-size: 1em;
-      max-width: 600px;
-      margin: 1em auto;
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      background: #e9ecef;
+      border-radius: 30px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .tab.active {
+      background: #007acc;
+      color: white;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: #007acc;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .error {
+      color: #d9534f;
+      padding: 10px;
+      background: rgba(217, 83, 79, 0.1);
+      border-radius: 8px;
+      margin: 10px 0;
+      display: none;
+    }
+    
+    .success {
+      color: #5cb85c;
+      padding: 10px;
+      background: rgba(92, 184, 92, 0.1);
+      border-radius: 8px;
+      margin: 10px 0;
+      display: none;
+    }
+    
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 1em 0;
+    }
+    
+    .btn-group button {
+      width: auto;
+      min-width: 150px;
+    }
+    
+    @media (max-width: 600px) {
+      body {
+        padding: 1em;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+      }
+      
+      .btn-group button {
+        width: 90%;
+        max-width: 400px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Free Barcode Generator</h1>
-  <p>Generate EAN, Codabar, Pharmacode, and other barcodes as PNG or JPEG images</p>
+  <div class="container">
+    <h1>Advanced Barcode Generator</h1>
+    <p>Create custom barcodes for EAN, UPC, Code 128, and more with advanced options</p>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="single">Single Barcode</div>
+      <div class="tab" data-tab="batch">Batch Barcodes</div>
+      <div class="tab" data-tab="custom">Custom Barcodes</div>
+    </div>
+    
+    <!-- Single Barcode Tab -->
+    <div class="tab-content active" id="single-tab">
+      <select id="ean-type">
+        <option value="ean13" selected>EAN-13</option>
+        <option value="ean8">EAN-8</option>
+        <option value="code128">Code 128</option>
+        <option value="code39">Code 39</option>
+        <option value="upc">UPC-A</option>
+        <option value="itf14">ITF-14</option>
+        <option value="codabar">Codabar</option>
+        <option value="msi">MSI</option>
+        <option value="pharmacode">Pharmacode</option>
+        <option value="datamatrix">Data Matrix</option>
+        <option value="qrcode">QR Code</option>
+      </select>
 
-  <select id="ean-type">
-    <option value="ean13" selected>EAN-13</option>
-    <option value="ean8">EAN-8</option>
-    <option value="code128">Code 128</option>
-    <option value="code39">Code 39</option>
-    <option value="upc">UPC-A</option>
-    <option value="itf14">ITF-14</option>
-    <option value="codabar">Codabar</option>
-    <option value="msi">MSI</option>
-    <option value="pharmacode">Pharmacode</option>
-  </select>
-
-  <input id="ean-input" type="text" placeholder="Enter barcode or leave blank to auto-generate" />
-  <select id="file-format">
-    <option value="png" selected>PNG</option>
-    <option value="jpeg">JPEG</option>
-  </select>
-  <button onclick="generateSingleEAN()">Generate New Barcode</button>
-  <br />
-  <canvas id="ean-canvas" style="display: none;"></canvas>
-  <br />
-  <button id="download-btn" style="display:none" onclick="downloadSingleEAN()">Download</button>
-
-  <hr style="margin: 2em auto; width: 80%;" />
-
-  <h2>Batch Generate Barcodes</h2>
-  <select id="batch-ean-type">
-    <option value="ean13" selected>EAN-13</option>
-    <option value="ean8">EAN-8</option>
-    <option value="code128">Code 128</option>
-    <option value="code39">Code 39</option>
-    <option value="upc">UPC-A</option>
-    <option value="itf14">ITF-14</option>
-    <option value="codabar">Codabar</option>
-    <option value="msi">MSI</option>
-    <option value="pharmacode">Pharmacode</option>
-  </select>
-  <input id="batch-amount" type="number" min="1" max="100" placeholder="Enter number of codes (1–100)" />
-  <select id="batch-file-format">
-    <option value="png" selected>PNG</option>
-    <option value="jpeg">JPEG</option>
-  </select>
-  <button onclick="generateBatchEANs()">Download Batch as ZIP</button>
-
-  <hr style="margin: 2em auto; width: 80%; border: 0; border-top: 1px solid #ddd;" />
-
-  <!-- Sister Sites Section -->
-  <div class="sister-tools-section">
-    <h2>Try Our Other Free Tools</h2>
-    <p>All our tools process your data entirely in your browser, ensuring your files are never stored or uploaded, keeping your privacy completely secure.</p>
-    <a href="https://www.free-qr-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
-      Free QR Generator
-    </a>
-    <a href="https://www.free-image-toolkit.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
-      Free Image Toolkit
-    </a>
+      <input id="ean-input" type="text" placeholder="Enter barcode or leave blank to auto-generate" autofocus>
+      
+      <div class="btn-group">
+        <button onclick="generateSingleEAN()">Generate Barcode</button>
+        <button id="download-btn" style="display:none" onclick="downloadSingleEAN()">Download</button>
+      </div>
+      
+      <div class="loading" id="single-loading">
+        <div class="spinner"></div>
+        Generating Barcode...
+      </div>
+      
+      <div class="error" id="single-error"></div>
+      <div class="success" id="single-success"></div>
+      
+      <canvas id="ean-canvas" style="display: none;"></canvas>
+    </div>
+    
+    <!-- Batch Barcodes Tab -->
+    <div class="tab-content" id="batch-tab">
+      <h2>Batch Generate Barcodes</h2>
+      
+      <select id="batch-ean-type">
+        <option value="ean13" selected>EAN-13</option>
+        <option value="ean8">EAN-8</option>
+        <option value="code128">Code 128</option>
+        <option value="code39">Code 39</option>
+        <option value="upc">UPC-A</option>
+        <option value="itf14">ITF-14</option>
+        <option value="codabar">Codabar</option>
+        <option value="msi">MSI</option>
+        <option value="pharmacode">Pharmacode</option>
+      </select>
+      
+      <input id="batch-amount" type="number" min="1" max="100" placeholder="Enter number of codes (1–100)" />
+      
+      <button onclick="generateBatchEANs()">Download Batch as ZIP</button>
+      
+      <div class="loading" id="batch-loading">
+        <div class="spinner"></div>
+        <div id="batch-progress">Generating barcodes: 0/0</div>
+      </div>
+      
+      <div class="success" id="batch-success"></div>
+      <div class="error" id="batch-error"></div>
+    </div>
+    
+    <!-- Custom Barcodes Tab -->
+    <div class="tab-content" id="custom-tab">
+      <h2>Custom Barcode Generator</h2>
+      
+      <select id="custom-type">
+        <option value="code128">Code 128</option>
+        <option value="code39">Code 39</option>
+        <option value="codabar">Codabar</option>
+        <option value="msi">MSI</option>
+        <option value="pharmacode">Pharmacode</option>
+      </select>
+      
+      <input id="custom-input" type="text" placeholder="Enter custom text for barcode" />
+      
+      <div class="btn-group">
+        <button onclick="generateCustomBarcode()">Generate Custom Barcode</button>
+        <button id="custom-download" style="display:none" onclick="downloadCustomBarcode()">Download</button>
+      </div>
+      
+      <div class="loading" id="custom-loading">
+        <div class="spinner"></div>
+        Generating Custom Barcode...
+      </div>
+      
+      <div class="error" id="custom-error"></div>
+      <div class="success" id="custom-success"></div>
+      
+      <canvas id="custom-canvas" style="display: none;"></canvas>
+    </div>
+    
+    <hr style="margin: 2em auto; width: 80%; border: 0; border-top: 1px solid #ddd;" />
+    
+    <!-- Sister Sites Section -->
+    <div class="sister-tools-section">
+      <h2>Try Our Other Free Tools</h2>
+      <p>All our tools process your data entirely in your browser, ensuring your files are never stored or uploaded, keeping your privacy completely secure.</p>
+      <a href="https://www.free-qr-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
+        Free QR Generator
+      </a>
+      <a href="https://www.free-image-toolkit.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
+        Free Image Toolkit
+      </a>
+      <a href="https://www.free-video-toolkit.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
+        Free Video Toolkit
+      </a>
+    </div>
+    
+    <footer>
+      <p>Free Barcode Maker. Made with ❤️ | All processing happens in your browser - your data never leaves your device</p>
+    </footer>
   </div>
-
-  <footer>
-    Free Barcode Maker. Made with ❤️
-  </footer>
-
+  
   <script>
+    // DOM Elements
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const singleCanvas = document.getElementById('ean-canvas');
+    const customCanvas = document.getElementById('custom-canvas');
+    const downloadBtn = document.getElementById('download-btn');
+    const customDownloadBtn = document.getElementById('custom-download');
+    const singleLoading = document.getElementById('single-loading');
+    const batchLoading = document.getElementById('batch-loading');
+    const customLoading = document.getElementById('custom-loading');
+    const batchProgress = document.getElementById('batch-progress');
+    const singleError = document.getElementById('single-error');
+    const batchError = document.getElementById('batch-error');
+    const customError = document.getElementById('custom-error');
+    const singleSuccess = document.getElementById('single-success');
+    const batchSuccess = document.getElementById('batch-success');
+    const customSuccess = document.getElementById('custom-success');
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      // Tab switching
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+        });
+      });
+      
+      // Generate on Enter key
+      document.getElementById('ean-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          generateSingleEAN();
+        }
+      });
+      
+      document.getElementById('custom-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          generateCustomBarcode();
+        }
+      });
+    });
+    
+    // Helper to show error
+    function showError(element, message) {
+      element.textContent = message;
+      element.style.display = 'block';
+    }
+    
+    // Helper to show success
+    function showSuccess(element, message) {
+      element.textContent = message;
+      element.style.display = 'block';
+    }
+    
+    // Helper to hide elements
+    function hideElements() {
+      document.querySelectorAll('.error, .success').forEach(el => {
+        el.style.display = 'none';
+      });
+    }
+    
+    // Calculate checksum
     function calculateChecksum(code, type) {
       let sum = 0;
       if (type === 'ean8') {
@@ -185,6 +448,7 @@
       return (10 - (sum % 10)) % 10;
     }
 
+    // Generate random EAN
     function generateRandomEAN(type) {
       const length = type === 'ean8' ? 7 : type === 'upc' ? 11 : type === 'itf14' ? 13 : 12;
       let base = '';
@@ -194,6 +458,7 @@
       return base + calculateChecksum(base, type);
     }
 
+    // Generate random barcode
     function generateRandomBarcode(type) {
       switch (type) {
         case 'ean13':
@@ -214,108 +479,200 @@
       }
     }
 
+    // Generate single EAN
     function generateSingleEAN() {
       const type = document.getElementById('ean-type').value;
-      const format = document.getElementById('file-format').value;
       const input = document.getElementById('ean-input');
-      const canvas = document.getElementById('ean-canvas');
-      const ctx = canvas.getContext('2d');
+      const ctx = singleCanvas.getContext('2d');
       
-      // Reset canvas
-      canvas.width = 0;
-      canvas.height = 0;
-      canvas.style.display = 'none';
+      // Reset
+      hideElements();
+      singleLoading.style.display = 'block';
+      downloadBtn.style.display = 'none';
+      singleCanvas.style.display = 'none';
       
-      canvas.width = 400;
-      canvas.height = type === 'pharmacode' ? 100 : 150;
-      canvas.style.display = 'block';
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      setTimeout(() => {
+        // Reset canvas
+        singleCanvas.width = 0;
+        singleCanvas.height = 0;
+        
+        singleCanvas.width = 400;
+        singleCanvas.height = type === 'pharmacode' || type === 'datamatrix' || type === 'qrcode' ? 150 : 100;
+        ctx.clearRect(0, 0, singleCanvas.width, singleCanvas.height);
 
-      let code = input.value.trim();
-      input.value = '';
+        let code = input.value.trim();
+        input.value = '';
 
-      const expectedLength = {
-        ean13: 13,
-        ean8: 8,
-        upc: 12,
-        itf14: 14
-      }[type] || null;
+        const expectedLength = {
+          ean13: 13,
+          ean8: 8,
+          upc: 12,
+          itf14: 14
+        }[type] || null;
 
-      if (type === 'pharmacode') {
-        const numCode = parseInt(code);
-        if (!code || isNaN(numCode) || numCode < 3 || numCode > 131070) {
+        if (type === 'pharmacode') {
+          const numCode = parseInt(code);
+          if (!code || isNaN(numCode) || numCode < 3 || numCode > 131070) {
+            code = generateRandomBarcode(type);
+            input.value = code;
+          }
+        } else if (!code || (expectedLength && code.length !== expectedLength)) {
           code = generateRandomBarcode(type);
           input.value = code;
         }
-      } else if (!code || (expectedLength && code.length !== expectedLength)) {
-        code = generateRandomBarcode(type);
-        input.value = code;
-      }
 
-      try {
-        JsBarcode('#ean-canvas', code, { 
-          format: type === 'upc' ? 'upc' : type, 
-          displayValue: true,
-          width: type === 'pharmacode' ? 2 : 2,
-          height: type === 'pharmacode' ? 50 : 100
-        });
-        document.getElementById('download-btn').style.display = 'inline-block';
-      } catch (err) {
-        alert('Failed to generate barcode: ' + err.message);
-      }
-    }
-
-    function downloadSingleEAN() {
-      const format = document.getElementById('file-format').value;
-      const canvas = document.getElementById('ean-canvas');
-      const link = document.createElement('a');
-      link.download = `barcode.${format}`;
-      link.href = canvas.toDataURL(`image/${format === 'jpeg' ? 'jpeg' : 'png'}`, format === 'jpeg' ? 0.9 : 1.0);
-      link.click();
-    }
-
-    async function generateBatchEANs() {
-      const type = document.getElementById('batch-ean-type').value;
-      const format = document.getElementById('batch-file-format').value;
-      const amount = parseInt(document.getElementById('batch-amount').value);
-      if (isNaN(amount) || amount < 1 || amount > 100) {
-        alert('Please enter a number between 1 and 100.');
-        return;
-      }
-
-      const zip = new JSZip();
-      const canvas = document.createElement('canvas');
-
-      for (let i = 0; i < amount; i++) {
-        let code = generateRandomBarcode(type);
-        if (type === 'pharmacode') {
-          const numCode = parseInt(code);
-          if (isNaN(numCode) || numCode < 3 || numCode > 131070) {
-            code = Math.floor(Math.random() * (131070 - 3 + 1) + 3).toString();
-          }
-        }
         try {
-          canvas.width = 400;
-          canvas.height = type === 'pharmacode' ? 100 : 150;
-          JsBarcode(canvas, code, { 
-            format: type === 'upc' ? 'upc' : type, 
+          let format = type;
+          if (type === 'upc') format = 'upc';
+          if (type === 'qrcode') format = 'qrcode';
+          if (type === 'datamatrix') format = 'datamatrix';
+          
+          JsBarcode('#ean-canvas', code, { 
+            format: format,
             displayValue: true,
             width: type === 'pharmacode' ? 2 : 2,
             height: type === 'pharmacode' ? 50 : 100
           });
-          const dataUrl = canvas.toDataURL(`image/${format === 'jpeg' ? 'jpeg' : 'png'}`, format === 'jpeg' ? 0.9 : 1.0);
-          const imgData = dataUrl.replace(/^data:image\/(png|jpeg);base64,/, '');
-          zip.file(`${type}_${code}.${format}`, imgData, { base64: true });
+          
+          downloadBtn.style.display = 'inline-block';
+          singleCanvas.style.display = 'block';
+          showSuccess(singleSuccess, 'Barcode generated successfully!');
         } catch (err) {
-          console.warn(`Skipped code ${code}: ${err.message}`);
+          showError(singleError, 'Failed to generate barcode: ' + err.message);
         }
+        
+        singleLoading.style.display = 'none';
+      }, 300);
+    }
+
+    // Download single EAN
+    function downloadSingleEAN() {
+      const link = document.createElement('a');
+      link.download = 'barcode.png';
+      link.href = singleCanvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Generate batch EANs
+    async function generateBatchEANs() {
+      const type = document.getElementById('batch-ean-type').value;
+      const amount = parseInt(document.getElementById('batch-amount').value);
+      
+      if (isNaN(amount) || amount < 1 || amount > 100) {
+        showError(batchError, 'Please enter a number between 1 and 100.');
+        return;
       }
 
-      const blob = await zip.generateAsync({ type: 'blob' });
-      const url = URL.createObjectURL(blob);
+      // Reset
+      hideElements();
+      batchLoading.style.display = 'block';
+      batchSuccess.style.display = 'none';
+      batchError.style.display = 'none';
+
+      try {
+        const zip = new JSZip();
+        const canvas = document.createElement('canvas');
+
+        for (let i = 0; i < amount; i++) {
+          // Update progress
+          batchProgress.textContent = `Generating barcodes: ${i + 1}/${amount}`;
+          
+          let code = generateRandomBarcode(type);
+          if (type === 'pharmacode') {
+            const numCode = parseInt(code);
+            if (isNaN(numCode) || numCode < 3 || numCode > 131070) {
+              code = Math.floor(Math.random() * (131070 - 3 + 1) + 3).toString();
+            }
+          }
+          
+          try {
+            canvas.width = 400;
+            canvas.height = type === 'pharmacode' ? 100 : 150;
+            
+            let format = type;
+            if (type === 'upc') format = 'upc';
+            
+            JsBarcode(canvas, code, { 
+              format: format,
+              displayValue: true,
+              width: type === 'pharmacode' ? 2 : 2,
+              height: type === 'pharmacode' ? 50 : 100
+            });
+            
+            const dataUrl = canvas.toDataURL('image/png');
+            const imgData = dataUrl.replace(/^data:image\/png;base64,/, '');
+            zip.file(`${type}_${code}.png`, imgData, { base64: true });
+          } catch (err) {
+            console.warn(`Skipped code ${code}: ${err.message}`);
+          }
+          
+          // Add small delay to prevent UI freeze
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
+
+        const blob = await zip.generateAsync({ type: 'blob' });
+        saveAs(blob, `batch-${type}.zip`);
+        
+        batchLoading.style.display = 'none';
+        showSuccess(batchSuccess, `Successfully generated and downloaded ${amount} barcodes!`);
+      } catch (error) {
+        batchLoading.style.display = 'none';
+        showError(batchError, 'Error creating ZIP file: ' + error.message);
+      }
+    }
+    
+    // Generate custom barcode
+    function generateCustomBarcode() {
+      const type = document.getElementById('custom-type').value;
+      const input = document.getElementById('custom-input');
+      const ctx = customCanvas.getContext('2d');
+      
+      // Reset
+      hideElements();
+      customLoading.style.display = 'block';
+      customDownloadBtn.style.display = 'none';
+      customCanvas.style.display = 'none';
+      
+      setTimeout(() => {
+        // Reset canvas
+        customCanvas.width = 0;
+        customCanvas.height = 0;
+        
+        customCanvas.width = 400;
+        customCanvas.height = 100;
+        ctx.clearRect(0, 0, customCanvas.width, customCanvas.height);
+
+        let code = input.value.trim();
+        if (!code) {
+          showError(customError, 'Please enter custom text for the barcode');
+          customLoading.style.display = 'none';
+          return;
+        }
+
+        try {
+          JsBarcode('#custom-canvas', code, { 
+            format: type,
+            displayValue: true,
+            width: 2,
+            height: 100
+          });
+          
+          customDownloadBtn.style.display = 'inline-block';
+          customCanvas.style.display = 'block';
+          showSuccess(customSuccess, 'Custom barcode generated successfully!');
+        } catch (err) {
+          showError(customError, 'Failed to generate custom barcode: ' + err.message);
+        }
+        
+        customLoading.style.display = 'none';
+      }, 300);
+    }
+    
+    // Download custom barcode
+    function downloadCustomBarcode() {
       const link = document.createElement('a');
-      link.href = url;
-      link.download = `batch-${type}.zip`;
+      link.download = 'custom-barcode.png';
+      link.href = customCanvas.toDataURL('image/png');
       link.click();
     }
   </script>
