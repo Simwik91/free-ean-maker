@@ -67,6 +67,12 @@
       color: #007acc;
     }
     
+    h3 {
+      font-size: 1.2em;
+      margin: 1em 0 0.5em;
+      color: #005fa3;
+    }
+    
     p {
       margin: 0.5em 0 1.5em;
       color: #666;
@@ -217,6 +223,26 @@
       min-width: 150px;
     }
     
+    .format-info {
+      background-color: #f8f9fa;
+      border-left: 4px solid #007acc;
+      padding: 10px 15px;
+      margin: 1em auto;
+      max-width: 400px;
+      text-align: left;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.9em;
+    }
+    
+    .format-info ul {
+      padding-left: 20px;
+      margin: 0.5em 0;
+    }
+    
+    .format-info li {
+      margin-bottom: 5px;
+    }
+    
     @media (max-width: 600px) {
       body {
         padding: 1em;
@@ -229,6 +255,11 @@
       .btn-group button {
         width: 90%;
         max-width: 400px;
+      }
+      
+      .tab {
+        padding: 8px 15px;
+        font-size: 0.9em;
       }
     }
   </style>
@@ -256,8 +287,6 @@
         <option value="codabar">Codabar</option>
         <option value="msi">MSI</option>
         <option value="pharmacode">Pharmacode</option>
-        <option value="datamatrix">Data Matrix</option>
-        <option value="qrcode">QR Code</option>
       </select>
 
       <input id="ean-input" type="text" placeholder="Enter barcode or leave blank to auto-generate" autofocus>
@@ -320,6 +349,17 @@
       </select>
       
       <input id="custom-input" type="text" placeholder="Enter custom text for barcode" />
+      
+      <div class="format-info">
+        <h3>Format Examples:</h3>
+        <ul>
+          <li><strong>Code 128:</strong> Alphanumeric (e.g., ABC123)</li>
+          <li><strong>Code 39:</strong> Alphanumeric (e.g., CODE39)</li>
+          <li><strong>Codabar:</strong> Start/end with A-D, digits and -$:/.+ (e.g., A12345B)</li>
+          <li><strong>MSI:</strong> Numeric only (e.g., 123456)</li>
+          <li><strong>Pharmacode:</strong> Numbers 3-131070 (e.g., 1234)</li>
+        </ul>
+      </div>
       
       <div class="btn-group">
         <button onclick="generateCustomBarcode()">Generate Custom Barcode</button>
@@ -497,7 +537,7 @@
         singleCanvas.height = 0;
         
         singleCanvas.width = 400;
-        singleCanvas.height = type === 'pharmacode' || type === 'datamatrix' || type === 'qrcode' ? 150 : 100;
+        singleCanvas.height = type === 'pharmacode' ? 100 : 150;
         ctx.clearRect(0, 0, singleCanvas.width, singleCanvas.height);
 
         let code = input.value.trim();
@@ -524,8 +564,6 @@
         try {
           let format = type;
           if (type === 'upc') format = 'upc';
-          if (type === 'qrcode') format = 'qrcode';
-          if (type === 'datamatrix') format = 'datamatrix';
           
           JsBarcode('#ean-canvas', code, { 
             format: format,
