@@ -8,21 +8,21 @@
   <meta name="author" content="Free Barcode Maker">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://free-ean-maker.com/">
-  
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://free-ean-maker.com/">
   <meta property="og:title" content="Free Barcode Generator">
   <meta property="og:description" content="Create and download barcodes instantly for free. No signup required.">
   <meta property="og:image" content="https://free-ean-maker.com/preview.jpg">
-  
+
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://free-ean-maker.com/">
   <meta property="twitter:title" content="Free Barcode Generator">
   <meta property="twitter:description" content="Create and download barcodes instantly for free. No signup required.">
   <meta property="twitter:image" content="https://free-ean-maker.com/preview.jpg">
-  
+
   <title>Free Barcode Generator</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-C4SSJKXG4Z"></script>
@@ -32,6 +32,7 @@
     gtag('js', new Date());
     gtag('config', 'G-C4SSJKXG4Z');
   </script>
+  <!-- Load AdSense script once -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -42,7 +43,6 @@
       margin: 0;
       padding: 0;
     }
-    
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
@@ -51,35 +51,29 @@
       color: #333;
       line-height: 1.6;
     }
-    
     .container {
       max-width: 800px;
       margin: 0 auto;
     }
-    
     h1 {
       font-size: 2.2em;
       margin-bottom: 0.3em;
       color: #005fa3;
     }
-    
     h2 {
       font-size: 1.5em;
       margin: 1.5em 0 0.8em;
       color: #007acc;
     }
-    
     h3 {
       font-size: 1.2em;
       margin: 1em 0 0.5em;
       color: #005fa3;
     }
-    
     p {
       margin: 0.5em 0 1.5em;
       color: #666;
     }
-    
     input, select, button, textarea {
       margin: 0.5em auto;
       padding: 0.75em;
@@ -91,7 +85,6 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       display: block;
     }
-    
     button {
       background-color: #007acc;
       color: white;
@@ -99,11 +92,9 @@
       cursor: pointer;
       transition: all 0.3s;
     }
-    
     button:hover {
       background-color: #005fa3;
     }
-    
     canvas {
       margin: 1.5em auto;
       display: block;
@@ -113,7 +104,6 @@
       background: white;
       padding: 10px;
     }
-    
     footer {
       margin-top: 3em;
       padding-top: 2em;
@@ -121,7 +111,6 @@
       color: #888;
       border-top: 1px solid #ddd;
     }
-    
     .sister-site-btn {
       display: block;
       background: #ff6600;
@@ -136,15 +125,12 @@
       transition: background-color 0.3s ease;
       text-align: center;
     }
-    
     .sister-site-btn:hover {
       background-color: #cc5200;
     }
-    
     .sister-tools-section {
       margin: 3em auto;
     }
-    
     .tabs {
       display: flex;
       justify-content: center;
@@ -152,7 +138,6 @@
       gap: 5px;
       flex-wrap: wrap;
     }
-    
     .tab {
       padding: 10px 20px;
       cursor: pointer;
@@ -161,26 +146,21 @@
       font-weight: 500;
       transition: all 0.3s;
     }
-    
     .tab.active {
       background: #007acc;
       color: white;
     }
-    
     .tab-content {
       display: none;
     }
-    
     .tab-content.active {
       display: block;
     }
-    
     .loading {
       display: none;
       text-align: center;
       padding: 20px;
     }
-    
     .spinner {
       border: 4px solid rgba(0, 0, 0, 0.1);
       border-left-color: #007acc;
@@ -190,11 +170,9 @@
       animation: spin 1s linear infinite;
       margin: 0 auto 15px;
     }
-    
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-    
     .error {
       color: #d9534f;
       padding: 10px;
@@ -203,7 +181,6 @@
       margin: 10px 0;
       display: none;
     }
-    
     .success {
       color: #5cb85c;
       padding: 10px;
@@ -212,19 +189,16 @@
       margin: 10px 0;
       display: none;
     }
-    
     .btn-group {
       display: flex;
       justify-content: center;
       gap: 10px;
       margin: 1em 0;
     }
-    
     .btn-group button {
       width: auto;
       min-width: 150px;
     }
-    
     .format-info {
       background-color: #f8f9fa;
       border-left: 4px solid #007acc;
@@ -235,41 +209,33 @@
       border-radius: 0 4px 4px 0;
       font-size: 0.9em;
     }
-    
     .format-info ul {
       padding-left: 20px;
       margin: 0.5em 0;
     }
-    
     .format-info li {
       margin-bottom: 5px;
     }
-    
     .ad-container {
       margin: 1em auto;
       max-width: 100%;
       text-align: center;
     }
-    
     @media (max-width: 600px) {
       body {
         padding: 1em;
       }
-      
       .btn-group {
         flex-direction: column;
       }
-      
       .btn-group button {
         width: 90%;
         max-width: 400px;
       }
-      
       .tab {
         padding: 8px 15px;
         font-size: 0.9em;
       }
-      
       .ad-container {
         width: 100%;
       }
@@ -280,6 +246,7 @@
   <div class="container">
     <h1>Free Barcode Generator</h1>
     <div class="ad-container">
+      <!-- Header_AD -->
       <ins class="adsbygoogle"
            style="display:block"
            data-ad-client="ca-pub-4041775163958551"
@@ -291,13 +258,13 @@
       </script>
     </div>
     <p>Create custom barcodes for EAN, UPC, Code 128, and more with advanced options</p>
-    
+
     <div class="tabs">
       <div class="tab active" data-tab="single">Single Barcode</div>
       <div class="tab" data-tab="batch">Batch Barcodes</div>
       <div class="tab" data-tab="custom">Custom Barcodes</div>
     </div>
-    
+
     <!-- Single Barcode Tab -->
     <div class="tab-content active" id="single-tab">
       <select id="ean-type">
@@ -313,27 +280,27 @@
       </select>
 
       <input id="ean-input" type="text" placeholder="Enter barcode or leave blank to auto-generate" autofocus>
-      
+
       <div class="btn-group">
         <button onclick="generateSingleEAN()">Generate Barcode</button>
         <button id="download-btn" style="display:none" onclick="downloadSingleEAN()">Download</button>
       </div>
-      
+
       <div class="loading" id="single-loading">
         <div class="spinner"></div>
         Generating Barcode...
       </div>
-      
+
       <div class="error" id="single-error"></div>
       <div class="success" id="single-success"></div>
-      
+
       <canvas id="ean-canvas" style="display: none;"></canvas>
     </div>
-    
+
     <!-- Batch Barcodes Tab -->
     <div class="tab-content" id="batch-tab">
       <h2>Batch Generate Barcodes</h2>
-      
+
       <select id="batch-ean-type">
         <option value="ean13" selected>EAN-13</option>
         <option value="ean8">EAN-8</option>
@@ -345,24 +312,24 @@
         <option value="msi">MSI</option>
         <option value="pharmacode">Pharmacode</option>
       </select>
-      
+
       <input id="batch-amount" type="number" min="1" max="100" placeholder="Enter number of codes (1–100)" />
-      
+
       <button onclick="generateBatchEANs()">Download Batch as ZIP</button>
-      
+
       <div class="loading" id="batch-loading">
         <div class="spinner"></div>
         <div id="batch-progress">Generating barcodes: 0/0</div>
       </div>
-      
+
       <div class="success" id="batch-success"></div>
       <div class="error" id="batch-error"></div>
     </div>
-    
+
     <!-- Custom Barcodes Tab -->
     <div class="tab-content" id="custom-tab">
       <h2>Custom Barcode Generator</h2>
-      
+
       <select id="custom-type">
         <option value="code128">Code 128</option>
         <option value="code39">Code 39</option>
@@ -370,9 +337,9 @@
         <option value="msi">MSI</option>
         <option value="pharmacode">Pharmacode</option>
       </select>
-      
+
       <input id="custom-input" type="text" placeholder="Enter custom text for barcode" />
-      
+
       <div class="format-info">
         <h3>Format Examples:</h3>
         <ul>
@@ -383,24 +350,25 @@
           <li><strong>Pharmacode:</strong> Numbers 3-131070 (e.g., 1234)</li>
         </ul>
       </div>
-      
+
       <div class="btn-group">
         <button onclick="generateCustomBarcode()">Generate Custom Barcode</button>
         <button id="custom-download" style="display:none" onclick="downloadCustomBarcode()">Download</button>
       </div>
-      
+
       <div class="loading" id="custom-loading">
         <div class="spinner"></div>
         Generating Custom Barcode...
       </div>
-      
+
       <div class="error" id="custom-error"></div>
       <div class="success" id="custom-success"></div>
-      
+
       <canvas id="custom-canvas" style="display: none;"></canvas>
     </div>
-    
+
     <div class="ad-container">
+      <!-- Content_AD -->
       <ins class="adsbygoogle"
            style="display:block"
            data-ad-client="ca-pub-4041775163958551"
@@ -411,9 +379,9 @@
         (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
     </div>
-    
+
     <hr style="margin: 2em auto; width: 80%; border: 0; border-top: 1px solid #ddd;" />
-    
+
     <!-- Sister Sites Section -->
     <div class="sister-tools-section">
       <h2>Try Our Other Free Tools</h2>
@@ -428,9 +396,10 @@
         Free Video Toolkit
       </a>
     </div>
-    
+
     <footer>
       <div class="ad-container">
+        <!-- Footer_AD -->
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-4041775163958551"
@@ -444,7 +413,7 @@
       <p>Free Barcode Maker | Made with ❤️</p>
     </footer>
   </div>
-  
+
   <script>
     // DOM Elements
     const tabs = document.querySelectorAll('.tab');
@@ -464,7 +433,7 @@
     const batchSuccess = document.getElementById('batch-success');
     const customSuccess = document.getElementById('custom-success');
     const eanInput = document.getElementById('ean-input');
-    
+
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       // Tab switching
@@ -476,40 +445,40 @@
           document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
         });
       });
-      
+
       // Generate on Enter key
       eanInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
           generateSingleEAN();
         }
       });
-      
+
       document.getElementById('custom-input').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
           generateCustomBarcode();
         }
       });
     });
-    
+
     // Helper to show error
     function showError(element, message) {
       element.textContent = message;
       element.style.display = 'block';
     }
-    
+
     // Helper to show success
     function showSuccess(element, message) {
       element.textContent = message;
       element.style.display = 'block';
     }
-    
+
     // Helper to hide elements
     function hideElements() {
       document.querySelectorAll('.error, .success').forEach(el => {
         el.style.display = 'none';
       });
     }
-    
+
     // Calculate checksum
     function calculateChecksum(code, type) {
       let sum = 0;
@@ -570,18 +539,18 @@
     function generateSingleEAN() {
       const type = document.getElementById('ean-type').value;
       const ctx = singleCanvas.getContext('2d');
-      
+
       // Reset
       hideElements();
       singleLoading.style.display = 'block';
       downloadBtn.style.display = 'none';
       singleCanvas.style.display = 'none';
-      
+
       setTimeout(() => {
         // Reset canvas
         singleCanvas.width = 0;
         singleCanvas.height = 0;
-        
+
         singleCanvas.width = 400;
         singleCanvas.height = type === 'pharmacode' ? 100 : 150;
         ctx.clearRect(0, 0, singleCanvas.width, singleCanvas.height);
@@ -611,21 +580,21 @@
         try {
           let format = type;
           if (type === 'upc') format = 'upc';
-          
-          JsBarcode('#ean-canvas', code, { 
+
+          JsBarcode('#ean-canvas', code, {
             format: format,
             displayValue: true,
             width: type === 'pharmacode' ? 2 : 2,
             height: type === 'pharmacode' ? 50 : 100
           });
-          
+
           downloadBtn.style.display = 'inline-block';
           singleCanvas.style.display = 'block';
           showSuccess(singleSuccess, 'Barcode generated successfully!');
         } catch (err) {
           showError(singleError, 'Failed to generate barcode: ' + err.message);
         }
-        
+
         singleLoading.style.display = 'none';
       }, 300);
     }
@@ -642,13 +611,13 @@
     async function generateBatchEANs() {
       const type = document.getElementById('batch-ean-type').value;
       const amount = parseInt(document.getElementById('batch-amount').value);
-      
+
       if (isNaN(amount) || amount < 1 || amount > 100) {
         showError(batchError, 'Please enter a number between 1 and 100.');
         return;
       }
 
-      // Reset
+      // Reset élő
       hideElements();
       batchLoading.style.display = 'block';
       batchSuccess.style.display = 'none';
@@ -661,7 +630,7 @@
         for (let i = 0; i < amount; i++) {
           // Update progress
           batchProgress.textContent = `Generating barcodes: ${i + 1}/${amount}`;
-          
+
           let code = generateRandomBarcode(type);
           if (type === 'pharmacode') {
             const numCode = parseInt(code);
@@ -669,35 +638,35 @@
               code = Math.floor(Math.random() * (131070 - 3 + 1) + 3).toString();
             }
           }
-          
+
           try {
             canvas.width = 400;
             canvas.height = type === 'pharmacode' ? 100 : 150;
-            
+
             let format = type;
             if (type === 'upc') format = 'upc';
-            
-            JsBarcode(canvas, code, { 
+
+            JsBarcode(canvas, code, {
               format: format,
               displayValue: true,
               width: type === 'pharmacode' ? 2 : 2,
               height: type === 'pharmacode' ? 50 : 100
             });
-            
+
             const dataUrl = canvas.toDataURL('image/png');
             const imgData = dataUrl.replace(/^data:image\/png;base64,/, '');
             zip.file(`${type}_${code}.png`, imgData, { base64: true });
           } catch (err) {
             console.warn(`Skipped code ${code}: ${err.message}`);
           }
-          
+
           // Add small delay to prevent UI freeze
           await new Promise(resolve => setTimeout(resolve, 50));
         }
 
         const blob = await zip.generateAsync({ type: 'blob' });
         saveAs(blob, `batch-${type}.zip`);
-        
+
         batchLoading.style.display = 'none';
         showSuccess(batchSuccess, `Successfully generated and downloaded ${amount} barcodes!`);
       } catch (error) {
@@ -705,24 +674,24 @@
         showError(batchError, 'Error creating ZIP file: ' + error.message);
       }
     }
-    
+
     // Generate custom barcode
     function generateCustomBarcode() {
       const type = document.getElementById('custom-type').value;
       const input = document.getElementById('custom-input');
       const ctx = customCanvas.getContext('2d');
-      
+
       // Reset
       hideElements();
       customLoading.style.display = 'block';
       customDownloadBtn.style.display = 'none';
       customCanvas.style.display = 'none';
-      
+
       setTimeout(() => {
         // Reset canvas
         customCanvas.width = 0;
         customCanvas.height = 0;
-        
+
         customCanvas.width = 400;
         customCanvas.height = 100;
         ctx.clearRect(0, 0, customCanvas.width, customCanvas.height);
@@ -735,24 +704,24 @@
         }
 
         try {
-          JsBarcode('#custom-canvas', code, { 
+          JsBarcode('#custom-canvas', code, {
             format: type,
             displayValue: true,
             width: 2,
             height: 100
           });
-          
+
           customDownloadBtn.style.display = 'inline-block';
           customCanvas.style.display = 'block';
           showSuccess(customSuccess, 'Custom barcode generated successfully!');
         } catch (err) {
           showError(customError, 'Failed to generate custom barcode: ' + err.message);
         }
-        
+
         customLoading.style.display = 'none';
       }, 300);
     }
-    
+
     // Download custom barcode
     function downloadCustomBarcode() {
       const link = document.createElement('a');
