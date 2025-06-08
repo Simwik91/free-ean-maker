@@ -110,6 +110,48 @@
       margin: 0 auto 25px;
     }
 
+    /* ADDED FEATURES SECTION STYLES */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin: 30px 0;
+    }
+    
+    .feature {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 25px;
+      text-align: center;
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+    }
+    
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+      background: #f0f4ff;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+    }
+    
+    .feature h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: var(--dark);
+    }
+    
     .card {
       background: white;
       border-radius: var(--border-radius);
@@ -319,7 +361,7 @@
       max-width: 100%;
       text-align: center;
       border-radius: var(--border-radius);
-      overflow: hidden燕尾服;
+      overflow: hidden;
       background: white;
       padding: 15px;
       box-shadow: var(--box-shadow);
@@ -417,6 +459,10 @@
       .card {
         padding: 20px;
       }
+      
+      .feature {
+        padding: 20px;
+      }
 
       h1 {
         font-size: 2rem;
@@ -481,6 +527,30 @@
       <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
+    </div>
+    
+    <!-- ADDED FEATURES SECTION -->
+    <div class="features">
+      <div class="feature">
+        <i class="fas fa-keyboard"></i>
+        <h3>Autogenerate or Manual Input</h3>
+        <p>Generate random barcodes automatically or enter your own values for complete control</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-layer-group"></i>
+        <h3>Batch Generation</h3>
+        <p>Generate multiple barcodes at once and download as a ZIP file</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-file-export"></i>
+        <h3>Multiple Formats</h3>
+        <p>Support for EAN-13, EAN-8, UPC, Code 128, Code 39, and more</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-shield-alt"></i>
+        <h3>Privacy First</h3>
+        <p>All processing happens in your browser - no data is uploaded to servers</p>
+      </div>
     </div>
 
     <div class="card">
@@ -951,7 +1021,7 @@
           showError(customError, 'Failed to generate custom barcode: ' + err.message);
         }
 
-        customLoading.style.display = 'none'; // Fixed: Changed from singleLoading to customLoading
+        customLoading.style.display = 'none';
       }, 300);
     }
 
