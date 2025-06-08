@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://free-ean-maker.com/sitemap.xml
