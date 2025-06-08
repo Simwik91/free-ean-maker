@@ -319,7 +319,7 @@
       max-width: 100%;
       text-align: center;
       border-radius: var(--border-radius);
-      overflow: hidden;
+      overflow: hidden燕尾服;
       background: white;
       padding: 15px;
       box-shadow: var(--box-shadow);
@@ -687,7 +687,7 @@
       });
 
       document.getElementById('custom-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') { // Fixed syntax error: added parentheses
+        if (e.key === 'Enter') {
           generateCustomBarcode();
         }
       });
@@ -951,7 +951,7 @@
           showError(customError, 'Failed to generate custom barcode: ' + err.message);
         }
 
-        singleLoading.style.display = 'none';
+        customLoading.style.display = 'none'; // Fixed: Changed from singleLoading to customLoading
       }, 300);
     }
 
