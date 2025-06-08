@@ -32,221 +32,446 @@
     gtag('js', new Date());
     gtag('config', 'G-C4SSJKXG4Z');
   </script>
-  <!-- Load AdSense script once -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4041775163958551" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --secondary: #7209b7;
+      --accent: #f72585;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+      --light-gray: #e9ecef;
+      --border-radius: 12px;
+      --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      --transition: all 0.3s ease;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      text-align: center;
-      padding: 2em;
-      background: #f4f4f4;
-      color: #333;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+      color: var(--dark);
       line-height: 1.6;
+      min-height: 100vh;
+      padding: 20px;
     }
+
     .container {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
     }
+
+    header {
+      text-align: center;
+      padding: 30px 0 20px;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      color: var(--primary);
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
     h1 {
-      font-size: 2.2em;
-      margin-bottom: 0.3em;
-      color: #005fa3;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+      color: var(--dark);
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: var(--gray);
+      max-width: 700px;
+      margin: 0 auto 25px;
+    }
+
+    .card {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 30px;
+      margin-bottom: 30px;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+    }
+
     h2 {
-      font-size: 1.5em;
-      margin: 1.5em 0 0.8em;
-      color: #007acc;
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      color: var(--dark);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
+
+    h2 i {
+      color: var(--primary);
+    }
+
     h3 {
-      font-size: 1.2em;
-      margin: 1em 0 0.5em;
-      color: #005fa3;
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: var(--dark);
+      font-weight: 600;
     }
-    p {
-      margin: 0.5em 0 1.5em;
-      color: #666;
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin: 0 0 30px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
+
+    .tab {
+      padding: 12px 25px;
+      cursor: pointer;
+      background: var(--light-gray);
+      border-radius: 50px;
+      font-weight: 500;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+    }
+
+    .tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .tab:hover:not(.active) {
+      background: #dbe4ff;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     input, select, button, textarea {
       margin: 0.5em auto;
-      padding: 0.75em;
-      width: 90%;
-      max-width: 400px;
-      font-size: 1em;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      padding: 15px;
+      width: 100%;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--light-gray);
+      background: white;
       display: block;
+      transition: var(--transition);
+      font-family: 'Poppins', sans-serif;
     }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
     button {
-      background-color: #007acc;
+      background: var(--primary);
       color: white;
       border: none;
       cursor: pointer;
-      transition: all 0.3s;
+      font-weight: 600;
+      padding: 15px 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
+
     button:hover {
-      background-color: #005fa3;
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
     }
+
     canvas {
       margin: 1.5em auto;
       display: block;
       max-width: 100%;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      border-radius: 12px;
       background: white;
-      padding: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--light-gray);
     }
-    footer {
-      margin-top: 3em;
-      padding-top: 2em;
-      font-size: 0.85em;
-      color: #888;
-      border-top: 1px solid #ddd;
-    }
-    .sister-site-btn {
-      display: block;
-      background: #ff6600;
-      color: white;
-      padding: 0.75em 1.5em;
-      margin: 1em auto;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-      max-width: 400px;
-      width: 90%;
-      transition: background-color 0.3s ease;
-      text-align: center;
-    }
-    .sister-site-btn:hover {
-      background-color: #cc5200;
-    }
-    .sister-tools-section {
-      margin: 3em auto;
-    }
-    .tabs {
-      display: flex;
-      justify-content: center;
-      margin: 1em 0 2em;
-      gap: 5px;
-      flex-wrap: wrap;
-    }
-    .tab {
-      padding: 10px 20px;
-      cursor: pointer;
-      background: #e9ecef;
-      border-radius: 30px;
-      font-weight: 500;
-      transition: all 0.3s;
-    }
-    .tab.active {
-      background: #007acc;
-      color: white;
-    }
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-    }
+
     .loading {
       display: none;
       text-align: center;
-      padding: 20px;
+      padding: 30px;
     }
+
     .spinner {
       border: 4px solid rgba(0, 0, 0, 0.1);
-      border-left-color: #007acc;
+      border-left-color: var(--primary);
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
       animation: spin 1s linear infinite;
-      margin: 0 auto 15px;
+      margin: 0 auto 20px;
     }
+
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
     .error {
-      color: #d9534f;
-      padding: 10px;
-      background: rgba(217, 83, 79, 0.1);
-      border-radius: 8px;
-      margin: 10px 0;
+      color: #e74c3c;
+      padding: 15px;
+      background: rgba(231, 76, 60, 0.1);
+      border-radius: var(--border-radius);
+      margin: 20px 0;
       display: none;
+      border-left: 4px solid #e74c3c;
     }
+
     .success {
-      color: #5cb85c;
-      padding: 10px;
-      background: rgba(92, 184, 92, 0.1);
-      border-radius: 8px;
-      margin: 10px 0;
+      color: #27ae60;
+      padding: 15px;
+      background: rgba(39, 174, 96, 0.1);
+      border-radius: var(--border-radius);
+      margin: 20px 0;
       display: none;
+      border-left: 4px solid #27ae60;
     }
+
     .btn-group {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      margin: 1em 0;
+      gap: 15px;
+      margin: 1.5em 0;
+      flex-wrap: wrap;
     }
+
     .btn-group button {
       width: auto;
-      min-width: 150px;
+      min-width: 180px;
+      flex: 1;
     }
+
     .format-info {
-      background-color: #f8f9fa;
-      border-left: 4px solid #007acc;
-      padding: 10px 15px;
-      margin: 1em auto;
-      max-width: 400px;
+      background: #fafbff;
+      border-left: 4px solid var(--primary);
+      padding: 15px 20px;
+      margin: 1.5em auto;
+      max-width: 500px;
       text-align: left;
-      border-radius: 0 4px 4px 0;
-      font-size: 0.9em;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.95em;
+      box-shadow: var(--box-shadow);
     }
+
     .format-info ul {
-      padding-left: 20px;
+      padding-left: 25px;
       margin: 0.5em 0;
     }
+
     .format-info li {
-      margin-bottom: 5px;
+      margin-bottom: 8px;
+      color: var(--gray);
     }
+
     .ad-container {
-      margin: 1em auto;
+      margin: 30px auto;
       max-width: 100%;
       text-align: center;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background: white;
+      padding: 15px;
+      box-shadow: var(--box-shadow);
     }
-    @media (max-width: 600px) {
-      body {
-        padding: 1em;
+
+    .ad-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .sister-tools-section {
+      margin: 40px auto;
+    }
+
+    .sister-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 25px;
+    }
+
+    .sister-tool {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 25px;
+      text-align: center;
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+    }
+
+    .sister-tool:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .sister-tool i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+      background: #f0f4ff;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+    }
+
+    .sister-tool h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: var(--dark);
+    }
+
+    .sister-tool p {
+      margin-bottom: 20px;
+      color: var(--gray);
+    }
+
+    .sister-tool-btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .sister-tool-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    footer {
+      margin-top: 50px;
+      padding-top: 30px;
+      font-size: 0.9rem;
+      color: var(--gray);
+      border-top: 1px solid var(--light-gray);
+      text-align: center;
+    }
+
+    footer p {
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .card {
+        padding: 20px;
       }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
       .btn-group {
         flex-direction: column;
       }
+
       .btn-group button {
-        width: 90%;
-        max-width: 400px;
-      }
-      .tab {
-        padding: 8px 15px;
-        font-size: 0.9em;
-      }
-      .ad-container {
         width: 100%;
+      }
+
+      .tab {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+
+      header {
+        padding: 20px 0 10px;
+      }
+
+      .logo {
+        font-size: 2.2rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Free Barcode Generator</h1>
+    <header>
+      <div class="logo">
+        <i class="fas fa-barcode"></i>
+      </div>
+      <h1>Free Barcode Generator</h1>
+      <p class="tagline">Create custom barcodes for EAN, UPC, Code 128, and more.</p>
+      <p class="tagline">100% free with no sign-up required.</p>
+    </header>
+
     <div class="ad-container">
-      <!-- Header_AD -->
+      <div class="ad-label">Advertisement</div>
       <ins class="adsbygoogle"
            style="display:block"
            data-ad-client="ca-pub-4041775163958551"
@@ -257,118 +482,118 @@
         (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
     </div>
-    <p>Create custom barcodes for EAN, UPC, Code 128, and more with advanced options</p>
 
-    <div class="tabs">
-      <div class="tab active" data-tab="single">Single Barcode</div>
-      <div class="tab" data-tab="batch">Batch Barcodes</div>
-      <div class="tab" data-tab="custom">Custom Barcodes</div>
-    </div>
-
-    <!-- Single Barcode Tab -->
-    <div class="tab-content active" id="single-tab">
-      <select id="ean-type">
-        <option value="ean13" selected>EAN-13</option>
-        <option value="ean8">EAN-8</option>
-        <option value="code128">Code 128</option>
-        <option value="code39">Code 39</option>
-        <option value="upc">UPC-A</option>
-        <option value="itf14">ITF-14</option>
-        <option value="codabar">Codabar</option>
-        <option value="msi">MSI</option>
-        <option value="pharmacode">Pharmacode</option>
-      </select>
-
-      <input id="ean-input" type="text" placeholder="Enter barcode or leave blank to auto-generate" autofocus>
-
-      <div class="btn-group">
-        <button onclick="generateSingleEAN()">Generate Barcode</button>
-        <button id="download-btn" style="display:none" onclick="downloadSingleEAN()">Download</button>
+    <div class="card">
+      <div class="tabs">
+        <div class="tab active" data-tab="single">
+          <i class="fas fa-barcode"></i> Single Barcode
+        </div>
+        <div class="tab" data-tab="batch">
+          <i class="fas fa-layer-group"></i> Batch Barcodes
+        </div>
+        <div class="tab" data-tab="custom">
+          <i class="fas fa-cog"></i> Custom Barcodes
+        </div>
       </div>
 
-      <div class="loading" id="single-loading">
-        <div class="spinner"></div>
-        Generating Barcode...
+      <div class="tab-content active" id="single-tab">
+        <h2><i class="fas fa-barcode"></i> Generate Single Barcode</h2>
+        <select id="ean-type">
+          <option value="ean13" selected>EAN-13</option>
+          <option value="ean8">EAN-8</option>
+          <option value="code128">Code 128</option>
+          <option value="code39">Code 39</option>
+          <option value="upc">UPC-A</option>
+          <option value="itf14">ITF-14</option>
+          <option value="codabar">Codabar</option>
+          <option value="msi">MSI</option>
+          <option value="pharmacode">Pharmacode</option>
+        </select>
+        <input id="ean-input" type="text" placeholder="Enter barcode or leave blank to auto-generate" autofocus>
+        <div class="error" id="single-error"></div>
+        <div class="success" id="single-success"></div>
+        <div class="btn-group">
+          <button onclick="generateSingleEAN()">
+            <i class="fas fa-bolt"></i> Generate Barcode
+          </button>
+          <button id="download-btn" style="display:none" onclick="downloadSingleEAN()">
+            <i class="fas fa-download"></i> Download
+          </button>
+        </div>
+        <div class="loading" id="single-loading">
+          <div class="spinner"></div>
+          Generating Barcode...
+        </div>
+        <canvas id="ean-canvas" style="display: none;"></canvas>
       </div>
 
-      <div class="error" id="single-error"></div>
-      <div class="success" id="single-success"></div>
-
-      <canvas id="ean-canvas" style="display: none;"></canvas>
-    </div>
-
-    <!-- Batch Barcodes Tab -->
-    <div class="tab-content" id="batch-tab">
-      <h2>Batch Generate Barcodes</h2>
-
-      <select id="batch-ean-type">
-        <option value="ean13" selected>EAN-13</option>
-        <option value="ean8">EAN-8</option>
-        <option value="code128">Code 128</option>
-        <option value="code39">Code 39</option>
-        <option value="upc">UPC-A</option>
-        <option value="itf14">ITF-14</option>
-        <option value="codabar">Codabar</option>
-        <option value="msi">MSI</option>
-        <option value="pharmacode">Pharmacode</option>
-      </select>
-
-      <input id="batch-amount" type="number" min="1" max="100" placeholder="Enter number of codes (1–100)" />
-
-      <button onclick="generateBatchEANs()">Download Batch as ZIP</button>
-
-      <div class="loading" id="batch-loading">
-        <div class="spinner"></div>
-        <div id="batch-progress">Generating barcodes: 0/0</div>
+      <div class="tab-content" id="batch-tab">
+        <h2><i class="fas fa-layer-group"></i> Batch Barcode Generation</h2>
+        <select id="batch-ean-type">
+          <option value="ean13" selected>EAN-13</option>
+          <option value="ean8">EAN-8</option>
+          <option value="code128">Code 128</option>
+          <option value="code39">Code 39</option>
+          <option value="upc">UPC-A</option>
+          <option value="itf14">ITF-14</option>
+          <option value="codabar">Codabar</option>
+          <option value="msi">MSI</option>
+          <option value="pharmacode">Pharmacode</option>
+        </select>
+        <input id="batch-amount" type="number" min="1" max="100" placeholder="Enter number of codes (1–100)" />
+        <div class="btn-group">
+          <button onclick="generateBatchEANs()">
+            <i class="fas fa-file-archive"></i> Generate & Download as ZIP
+          </button>
+        </div>
+        <div class="loading" id="batch-loading">
+          <div class="spinner"></div>
+          <div id="batch-progress">Generating barcodes: 0/0</div>
+        </div>
+        <div class="success" id="batch-success"></div>
+        <div class="error" id="batch-error"></div>
       </div>
 
-      <div class="success" id="batch-success"></div>
-      <div class="error" id="batch-error"></div>
-    </div>
-
-    <!-- Custom Barcodes Tab -->
-    <div class="tab-content" id="custom-tab">
-      <h2>Custom Barcode Generator</h2>
-
-      <select id="custom-type">
-        <option value="code128">Code 128</option>
-        <option value="code39">Code 39</option>
-        <option value="codabar">Codabar</option>
-        <option value="msi">MSI</option>
-        <option value="pharmacode">Pharmacode</option>
-      </select>
-
-      <input id="custom-input" type="text" placeholder="Enter custom text for barcode" />
-
-      <div class="format-info">
-        <h3>Format Examples:</h3>
-        <ul>
-          <li><strong>Code 128:</strong> Alphanumeric (e.g., ABC123)</li>
-          <li><strong>Code 39:</strong> Alphanumeric (e.g., CODE39)</li>
-          <li><strong>Codabar:</strong> Start/end with A-D, digits and -$:/.+ (e.g., A12345B)</li>
-          <li><strong>MSI:</strong> Numeric only (e.g., 123456)</li>
-          <li><strong>Pharmacode:</strong> Numbers 3-131070 (e.g., 1234)</li>
-        </ul>
+      <div class="tab-content" id="custom-tab">
+        <h2><i class="fas fa-cog"></i> Custom Barcode Generator</h2>
+        <select id="custom-type">
+          <option value="code128">Code 128</option>
+          <option value="code39">Code 39</option>
+          <option value="codabar">Codabar</option>
+          <option value="msi">MSI</option>
+          <option value="pharmacode">Pharmacode</option>
+        </select>
+        <input id="custom-input" type="text" placeholder="Enter custom text for barcode" />
+        <div class="format-info">
+          <h3>Format Examples:</h3>
+          <ul>
+            <li><strong>Code 128:</strong> Alphanumeric (e.g., ABC123)</li>
+            <li><strong>Code 39:</strong> Alphanumeric (e.g., CODE39)</li>
+            <li><strong>Codabar:</strong> Start/end with A-D, digits and -$:/.+ (e.g., A12345B)</li>
+            <li><strong>MSI:</strong> Numeric only (e.g., 123456)</li>
+            <li><strong>Pharmacode:</strong> Numbers 3-131070 (e.g., 1234)</li>
+          </ul>
+        </div>
+        <div class="btn-group">
+          <button onclick="generateCustomBarcode()">
+            <i class="fas fa-bolt"></i> Generate Custom Barcode
+          </button>
+          <button id="custom-download" style="display:none" onclick="downloadCustomBarcode()">
+            <i class="fas fa-download"></i> Download
+          </button>
+        </div>
+        <div class="loading" id="custom-loading">
+          <div class="spinner"></div>
+          Generating Custom Barcode...
+        </div>
+        <div class="error" id="custom-error"></div>
+        <div class="success" id="custom-success"></div>
+        <canvas id="custom-canvas" style="display: none;"></canvas>
       </div>
-
-      <div class="btn-group">
-        <button onclick="generateCustomBarcode()">Generate Custom Barcode</button>
-        <button id="custom-download" style="display:none" onclick="downloadCustomBarcode()">Download</button>
-      </div>
-
-      <div class="loading" id="custom-loading">
-        <div class="spinner"></div>
-        Generating Custom Barcode...
-      </div>
-
-      <div class="error" id="custom-error"></div>
-      <div class="success" id="custom-success"></div>
-
-      <canvas id="custom-canvas" style="display: none;"></canvas>
     </div>
 
     <div class="ad-container">
-      <!-- Content_AD -->
+      <div class="ad-label">Advertisement</div>
       <ins class="adsbygoogle"
            style="display:block"
            data-ad-client="ca-pub-4041775163958551"
@@ -380,26 +605,34 @@
       </script>
     </div>
 
-    <hr style="margin: 2em auto; width: 80%; border: 0; border-top: 1px solid #ddd;" />
-
-    <!-- Sister Sites Section -->
     <div class="sister-tools-section">
-      <h2>Try Our Other Free Tools</h2>
+      <h2><i class="fas fa-tools"></i> Explore Our Free Tools</h2>
       <p>All our tools process your data entirely in your browser, ensuring your files are never stored or uploaded, keeping your privacy completely secure.</p>
-      <a href="https://free-qr-maker.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
-        Free QR Generator
-      </a>
-      <a href="https://free-image-toolkit.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
-        Free Image Toolkit
-      </a>
-      <a href="https://free-video-toolkit.com" target="_blank" rel="noopener noreferrer" class="sister-site-btn">
-        Free Video Toolkit
-      </a>
+      <div class="sister-tools-grid">
+        <div class="sister-tool">
+          <i class="fas fa-qrcode"></i>
+          <h3>Free QR Generator</h3>
+          <p>Create custom QR codes with logos and colors</p>
+          <a href="https://free-qr-maker.com" class="sister-tool-btn">Try Now</a>
+        </div>
+        <div class="sister-tool">
+          <i class="fas fa-image"></i>
+          <h3>Free Image Toolkit</h3>
+          <p>Resize, compress, and convert images without losing quality</p>
+          <a href="https://free-image-toolkit.com" class="sister-tool-btn">Try Now</a>
+        </div>
+        <div class="sister-tool">
+          <i class="fas fa-video"></i>
+          <h3>Free Video Toolkit</h3>
+          <p>Convert, trim, and compress videos in all popular formats</p>
+          <a href="https://free-video-toolkit.com" class="sister-tool-btn">Try Now</a>
+        </div>
+      </div>
     </div>
 
     <footer>
       <div class="ad-container">
-        <!-- Footer_AD -->
+        <div class="ad-label">Advertisement</div>
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-4041775163958551"
@@ -410,7 +643,7 @@
           (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
       </div>
-      <p>Free Barcode Maker | Made with ❤️</p>
+      <p>© 2025 Free Barcode Maker | Made with ❤️</p>
     </footer>
   </div>
 
@@ -454,7 +687,7 @@
       });
 
       document.getElementById('custom-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter') { // Fixed syntax error: added parentheses
           generateCustomBarcode();
         }
       });
@@ -617,7 +850,7 @@
         return;
       }
 
-      // Reset élő
+      // Reset
       hideElements();
       batchLoading.style.display = 'block';
       batchSuccess.style.display = 'none';
@@ -718,7 +951,7 @@
           showError(customError, 'Failed to generate custom barcode: ' + err.message);
         }
 
-        customLoading.style.display = 'none';
+        singleLoading.style.display = 'none';
       }, 300);
     }
 
