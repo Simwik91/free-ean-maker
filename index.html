@@ -384,23 +384,21 @@
     }
 
     .guide-grid {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
       margin-top: 25px;
-      overflow-x: auto;
     }
 
     .guide-item {
-      flex: 0 0 24%;
-      padding: 25px;
+      padding: 30px;
       background: #f8f9ff;
       border-radius: var(--border-radius);
-      min-width: 220px;
+      min-width: 280px;
     }
 
     .guide-item h3 {
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       margin-bottom: 15px;
       color: var(--primary);
       display: flex;
@@ -409,7 +407,11 @@
     }
 
     .guide-item h3 i {
-      font-size: 1.5rem;
+      font-size: 1.7rem;
+    }
+
+    .guide-item p {
+      font-size: 1.1rem;
     }
 
     .uses-section {
@@ -430,7 +432,7 @@
 
     .use-item {
       background: rgba(255, 255, 255, 0.1);
-      border-radius: var(self.borderRadius);
+      border-radius: var(--border-radius);
       padding: 25px;
       text-align: center;
       backdrop-filter: blur(5px);
@@ -561,12 +563,11 @@
       }
 
       .guide-grid {
-        flex-wrap: wrap;
+        grid-template-columns: 1fr;
       }
 
       .guide-item {
-        flex: 0 0 48%;
-        min-width: 200px;
+        min-width: 100%;
       }
 
       .uses-grid {
@@ -592,7 +593,7 @@
       }
 
       .guide-item {
-        flex: 0 0 100%;
+        min-width: 100%;
       }
     }
   </style>
@@ -1008,11 +1009,11 @@
             code = generateRandomBarcode(type);
           }
         } else if (!code || (expectedLength && code.length !== expectedLength)) {
-          code = generateRandomBarcode(type);
+            code = generateRandomBarcode(type);
         }
 
-        // Clear the input field to prepare for next generation
-        eanInput.value = '';
+        // Store the code for download
+        singleCanvas.dataset.code = code;
 
         try {
           let format = type;
@@ -1038,8 +1039,9 @@
 
     // Download single EAN
     function downloadSingleEAN() {
+      const code = singleCanvas.dataset.code || 'barcode';
       const link = document.createElement('a');
-      link.download = 'barcode.png';
+      link.download = `${code}.png`;
       link.href = singleCanvas.toDataURL('image/png');
       link.click();
     }
@@ -1092,7 +1094,7 @@
 
             const dataUrl = canvas.toDataURL('image/png');
             const imgData = dataUrl.replace(/^data:image\/png;base64,/, '');
-            zip.file(`${type}_${code}.png`, imgData, { base64: true });
+            zip.file(`${code}.png`, imgData, { base64: true });
           } catch (err) {
             console.warn(`Skipped code ${code}: ${err.message}`);
           }
@@ -1140,6 +1142,9 @@
           return;
         }
 
+        // Store the code for download
+        customCanvas.dataset.code = code;
+
         try {
           JsBarcode('#custom-canvas', code, {
             format: type,
@@ -1161,8 +1166,9 @@
 
     // Download custom barcode
     function downloadCustomBarcode() {
+      const code = customCanvas.dataset.code || 'custom-barcode';
       const link = document.createElement('a');
-      link.download = 'custom-barcode.png';
+      link.download = `${code}.png`;
       link.href = customCanvas.toDataURL('image/png');
       link.click();
     }
