@@ -391,10 +391,11 @@
     }
 
     .guide-item {
-      padding: 30px;
+      padding: 25px;
       background: #f8f9ff;
       border-radius: var(--border-radius);
-      min-width: 280px;
+      text-align: center;
+      font-size: 1.1rem;
     }
 
     .guide-item h3 {
@@ -404,14 +405,16 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      justify-content: center;
     }
 
     .guide-item h3 i {
-      font-size: 1.7rem;
+      font-size: 1.8rem;
     }
 
     .guide-item p {
       font-size: 1.1rem;
+      color: var(--gray);
     }
 
     .uses-section {
@@ -470,7 +473,7 @@
 
     .sister-tool:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 15px 35px rgba(0, 0,0.1);
     }
 
     .sister-tool i {
@@ -632,6 +635,29 @@
       </div>
     </div>
 
+    <div class="guide-section">
+      <h2><i class="fas fa-book"></i> Barcode Creation Guide</h2>
+      <p>Follow these steps to create your perfect barcode:</p>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <h3><i class="fas fa-tools"></i> Choose Barcode Type</h3>
+          <p>Select from EAN-13, Code 128, or other formats based on your needs.</p>
+        </div>
+        <div class="guide-item">
+          <h3><i class="fas fa-upload"></i> Enter or Auto-Generate</h3>
+          <p>Input your code or leave blank for a random barcode.</p>
+        </div>
+        <div class="guide-item">
+          <h3><i class="fas fa-edit"></i> Generate Barcode</h3>
+          <p>Click "Generate Barcode" to create your barcode instantly.</p>
+        </div>
+        <div class="guide-item">
+          <h3><i class="fas fa-download"></i> Download</h3>
+          <p>Download your barcode as a PNG file or ZIP for batch generation.</p>
+        </div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="tabs">
         <div class="tab active" data-tab="single">
@@ -744,29 +770,6 @@
         <div class="error" id="custom-error"></div>
         <div class="success" id="custom-success"></div>
         <canvas id="custom-canvas" style="display: none;"></canvas>
-      </div>
-    </div>
-
-    <div class="guide-section">
-      <h2><i class="fas fa-book"></i> Barcode Creation Guide</h2>
-      <p>Follow these simple steps to create your perfect barcode:</p>
-      <div class="guide-grid">
-        <div class="guide-item">
-          <h3><i class="fas fa-1"></i> Select Barcode Type</h3>
-          <p>Choose from EAN-13, Code 128, or other formats based on your needs.</p>
-        </div>
-        <div class="guide-item">
-          <h3><i class="fas fa-2"></i> Enter or Auto-Generate</h3>
-          <p>Input your code or leave blank for a random barcode.</p>
-        </div>
-        <div class="guide-item">
-          <h3><i class="fas fa-3"></i> Generate Barcode</h3>
-          <p>Click "Generate Barcode" to create your barcode instantly.</p>
-        </div>
-        <div class="guide-item">
-          <h3><i class="fas fa-4"></i> Download</h3>
-          <p>Download your barcode as a PNG file or ZIP for batch generation.</p>
-        </div>
       </div>
     </div>
 
