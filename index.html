@@ -413,6 +413,16 @@
       margin: 40px auto;
       box-shadow: var(--box-shadow);
     }
+    
+    /* UPDATED: Ensure text and icons are pure white */
+    .uses-section h2,
+    .uses-section p {
+      color: white !important;
+    }
+    
+    .uses-section h2 i {
+      color: white !important;
+    }
 
     .uses-grid {
       display: grid;
@@ -512,23 +522,41 @@
       box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
     }
 
+    /* UPDATED: Footer with larger/bolder text and removed dash */
     footer {
-      margin-top: 50px;
+      margin-top: auto;
       padding-top: 30px;
-      font-size: 0.9rem;
+      font-size: 1.1rem;
+      font-weight: 600;
       color: var(--gray);
       border-top: 1px solid var(--light-gray);
       text-align: center;
+      background: white;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-
-    footer p {
-      margin-bottom: 10px;
+    
+    .footer-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      max-width: 100%;
     }
-
+    
+    .footer-content span {
+      display: inline-block;
+    }
+    
     footer a {
       color: var(--primary);
       text-decoration: none;
       transition: var(--transition);
+      white-space: nowrap;
+      font-weight: 600;
     }
     
     footer a:hover {
@@ -537,10 +565,9 @@
     }
     
     .creator-credit {
-      margin-top: 15px;
       font-weight: 500;
       color: var(--dark);
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
 
     #cookie-consent {
@@ -1287,12 +1314,16 @@
       </div>
     </div>
 
+    <!-- UPDATED: Footer with larger/bolder text -->
     <footer>
-      <p>
-        <a href="privacy-policy">Privacy Policy</a> | 
+      <div class="footer-content">
+        <span>© 2025</span>
+        <a href="https://everytool.io">EveryTool.io</a>
+        <span class="separator">|</span>
+        <a href="privacy-policy">Privacy Policy</a>
+        <span class="separator">|</span>
         <a href="#" id="open-settings-footer">Cookie Settings</a>
-      </p>
-      <p class="creator-credit">© 2025 Free Barcode Generator | Made by <a href="https://everytool.io">EveryTool.io</a></p>
+      </div>
     </footer>
   </div>
 
