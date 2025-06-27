@@ -414,7 +414,6 @@
       box-shadow: var(--box-shadow);
     }
     
-    /* UPDATED: Ensure text and icons are pure white */
     .uses-section h2,
     .uses-section p {
       color: white !important;
@@ -442,17 +441,17 @@
     .use-item i {
       font-size: 2.5rem;
       margin-bottom: 20px;
-      color: white; /* Ensure icons are white */
+      color: white;
     }
 
     .use-item h3 {
       font-size: 1.3rem;
       margin-bottom: 15px;
-      color: white; /* Ensure headings are white */
+      color: white;
     }
 
     .use-item p {
-      color: white; /* Ensure paragraphs are white */
+      color: white;
     }
 
     .sister-tools-section {
@@ -461,7 +460,7 @@
 
     .sister-tools-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 25px;
       margin-top: 25px;
     }
@@ -473,6 +472,10 @@
       text-align: center;
       box-shadow: var(--box-shadow);
       transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 280px;
     }
 
     .sister-tool:hover {
@@ -503,6 +506,7 @@
     .sister-tool p {
       margin-bottom: 20px;
       color: var(--gray);
+      flex-grow: 1;
     }
 
     .sister-tool-btn {
@@ -514,6 +518,8 @@
       text-decoration: none;
       font-weight: 600;
       transition: var(--transition);
+      width: 100%;
+      text-align: center;
     }
 
     .sister-tool-btn:hover {
@@ -522,7 +528,6 @@
       box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
     }
 
-    /* UPDATED: Footer with larger/bolder text and removed dash */
     footer {
       margin-top: auto;
       padding-top: 30px;
@@ -734,7 +739,6 @@
       font-size: 1.2rem;
     }
 
-    /* Responsive toggle switch from everytool.io */
     .toggle-switch {
       position: relative;
       display: inline-block;
@@ -803,7 +807,6 @@
     .toggle-switch input:disabled + .slider:before {
       background-color: #ddd;
     }
-    /* End responsive toggle switch */
 
     .cookie-type p {
       font-size: 0.9rem;
@@ -832,7 +835,6 @@
       background: var(--primary-dark);
     }
 
-    /* FixMyTech card styling */
     .everytool-card {
       grid-column: 1 / -1;
       display: flex;
@@ -920,6 +922,10 @@
         padding: 20px;
       }
 
+      .sister-tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
       h1 {
         font-size: 2rem;
       }
@@ -957,7 +963,6 @@
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       }
       
-      /* Responsive styles for EveryTool card */
       .everytool-card {
         flex-direction: column;
         text-align: center;
@@ -975,6 +980,10 @@
     @media (max-width: 480px) {
       body {
         padding: 15px;
+      }
+
+      .sister-tools-grid {
+        grid-template-columns: 1fr;
       }
 
       header {
@@ -1282,39 +1291,33 @@
       <h2><i class="fas fa-tools"></i> Explore Our Free Tools</h2>
       <p>All our tools process your data entirely in your browser, ensuring your files are never stored or uploaded, keeping your privacy completely secure.</p>
       <div class="sister-tools-grid">
-        <!-- EveryTool.io Card -->
-        <div class="everytool-card sister-tool">
-          <i class="fas fa-tools"></i>
-          <div class="everytool-content">
-            <h3>Made by EveryTool.io</h3>
-            <p>We create free, easy-to-use tools that harness the power of your browser. Your privacy is our priority - your data never leaves your computer!</p>
-            <a href="https://everytool.io" class="everytool-btn">Visit EveryTool.io</a>
-          </div>
+        <div class="sister-tool">
+          <i class="fas fa-file-pdf"></i>
+          <h3>Free PDF Toolkit</h3>
+          <p>Merge, split, compress, and convert PDFs easily</p>
+          <a href="https://free-pdf-toolkit.com" class="sister-tool-btn" target="_blank" rel="noopener noreferrer">Try Now</a>
         </div>
-        
-        <!-- Existing sister tools -->
         <div class="sister-tool">
           <i class="fas fa-qrcode"></i>
           <h3>Free QR Generator</h3>
           <p>Create custom QR codes with logos and colors</p>
-          <a href="https://free-qr-maker.com" class="sister-tool-btn">Try Now</a>
+          <a href="https://free-qr-maker.com" class="sister-tool-btn" target="_blank" rel="noopener noreferrer">Try Now</a>
         </div>
         <div class="sister-tool">
           <i class="fas fa-image"></i>
           <h3>Free Image Toolkit</h3>
           <p>Resize, compress, and convert images without losing quality</p>
-          <a href="https://free-image-toolkit.com" class="sister-tool-btn">Try Now</a>
+          <a href="https://free-image-toolkit.com" class="sister-tool-btn" target="_blank" rel="noopener noreferrer">Try Now</a>
         </div>
         <div class="sister-tool">
           <i class="fas fa-video"></i>
           <h3>Free Video Toolkit</h3>
           <p>Convert, trim, and compress videos in all popular formats</p>
-          <a href="https://free-video-toolkit.com" class="sister-tool-btn">Try Now</a>
+          <a href="https://free-video-toolkit.com" class="sister-tool-btn" target="_blank" rel="noopener noreferrer">Try Now</a>
         </div>
       </div>
     </div>
 
-    <!-- UPDATED: Footer with larger/bolder text -->
     <footer>
       <div class="footer-content">
         <span>© 2025</span>
