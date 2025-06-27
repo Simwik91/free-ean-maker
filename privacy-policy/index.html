@@ -249,343 +249,39 @@
     }
     
     footer {
-      margin-top: 50px;
+      margin-top: auto;
       padding-top: 30px;
-      font-size: 0.9rem;
+      font-size: 1.1rem;
+      font-weight: 600;
       color: var(--gray);
       border-top: 1px solid var(--light-gray);
       text-align: center;
+      background: white;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     
-    footer p {
-      margin-bottom: 10px;
-    }
-    
-    footer a {
-      color: var(--primary);
-      text-decoration: none;
-      transition: var(--transition);
-    }
-    
-    footer a:hover {
-      color: var(--secondary);
-      text-decoration: underline;
-    }
-    
-    .creator-credit {
-      margin-top: 15px;
-      font-weight: 500;
-      color: var(--dark);
-      font-size: 1.1rem;
-    }
-    
-    /* Cookie Consent Styles */
-    #cookie-consent {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 95%;
-      max-width: 800px;
-      background: var(--light);
-      border-radius: var(--border-radius);
-      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
-      padding: 20px;
-      z-index: 1000;
-      display: none;
-    }
-
-    .cookie-content {
+    .footer-content {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .cookie-text {
-      flex: 1;
-      min-width: 300px;
-      color: var(--dark);
-    }
-
-    .cookie-text p {
-      margin-bottom: 10px;
-      font-size: 0.95rem;
-    }
-
-    .cookie-text a্র
-
-System: I notice that the provided code is incomplete, as it ends abruptly in the middle of the HTML structure. Since the task is to update the code to align with the everytool.io codebase by changing pointers from fixmytech.no to everytool.io and replacing the footer with the one from the main HTML, I'll complete the update assuming the missing parts are similar to the main HTML structure. I'll ensure all references to fixmytech.no are changed to everytool.io and replace the footer with the one from the main HTML provided earlier.
-
-<xaiArtifact artifact_id="18bce1e0-b964-41dc-9cd9-4fc07dc557bd" artifact_version_id="4773a414-7787-4ded-91da-749be6910998" title="privacy-policy.html" contentType="text/html">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - Free EAN Maker</title>
-  <link rel="canonical" href="https://free-ean-maker.com/privacy-policy">
-  <meta name="description" content="Privacy policy for Free EAN Maker, detailing data collection, cookie usage, and user rights.">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #4361ee;
-      --primary-dark: #3a56d4;
-      --secondary: #7209b7;
-      --accent: #f72585;
-      --light: #f8f9fa;
-      --dark: #212529;
-      --gray: #6c757d;
-      --light-gray: #e9ecef;
-      --border-radius: 12px;
-      --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-      --transition: all 0.3s ease;
-    }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, var(--light) 0%, #f0f4ff 100%);
-      color: var(--dark);
-      line-height: 1.6;
-      min-height: 100vh;
-      padding: 0;
-      transition: var(--transition);
-    }
-    
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    
-    header {
-      text-align: center;
-      padding: 40px 0 20px;
-      margin-bottom: 10px;
-    }
-    
-    .logo {
-      font-size: 3.5rem;
-      margin-bottom: 15px;
-      color: var(--primary);
-      display: inline-block;
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    
-    h1 {
-      font-size: 2.8rem;
-      margin-bottom: 10px;
-      font-weight: 700;
-      color: var(--dark);
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .tagline {
-      font-size: 1.3rem;
-      color: var(--gray);
-      max-width: 700px;
-      margin: 0 auto 25px;
-    }
-    
-    .privacy-hero {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      border-radius: var(--border-radius);
-      padding: 60px 40px;
-      margin: 40px 0;
-      box-shadow: var(--box-shadow);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .privacy-hero:before {
-      content: "";
-      position: absolute;
-      top: -50px;
-      right: -50px;
-      width: 200px;
-      height: 200px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-    }
-    
-    .privacy-hero:after {
-      content: "";
-      position: absolute;
-      bottom: -80px;
-      left: -80px;
-      width: 250px;
-      height: 250px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-    }
-    
-    .privacy-hero h2 {
-      font-size: 2.2rem;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .privacy-hero p {
-      max-width: 800px;
-      margin: 0 auto 20px;
-      font-size: 1.15rem;
-      position: relative;
-      z-index: 2;
-      line-height: 1.8;
-    }
-    
-    .privacy-content {
-      background: var(--light);
-      border-radius: var(--border-radius);
-      padding: 50px;
-      margin: 50px 0;
-      box-shadow: var(--box-shadow);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .privacy-content:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-    }
-    
-    .privacy-content h2 {
-      font-size: 1.8rem;
-      margin: 30px 0 15px;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .privacy-content h2 i {
-      color: var(--secondary);
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
       justify-content: center;
-      background: rgba(67, 97, 238, 0.1);
-      border-radius: 50%;
+      gap: 8px;
+      margin-bottom: 8px;
+      max-width: 100%;
     }
     
-    .privacy-content p {
-      font-size: 1.1rem;
-      color: var(--dark);
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
-    
-    .privacy-content ul {
-      margin: 20px 0;
-      padding-left: 30px;
-    }
-    
-    .privacy-content li {
-      margin-bottom: 12px;
-      line-height: 1.7;
-    }
-    
-    .privacy-content a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-      transition: var(--transition);
-      border-bottom: 1px dashed var(--primary);
-    }
-    
-    .privacy-content a:hover {
-      color: var(--secondary);
-      border-bottom: 1px solid var(--secondary);
-    }
-    
-    .update-date {
-      background: #f0f4ff;
-      padding: 10px 20px;
-      border-radius: 8px;
-      margin: 20px 0;
+    .footer-content span {
       display: inline-block;
-      font-weight: 500;
-      color: var(--primary);
-    }
-    
-    .privacy-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      padding: 8px 20px;
-      border-radius: 50px;
-      font-weight: 600;
-      margin: 10px 0;
-      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-    }
-    
-    .back-to-home {
-      display: inline-block;
-      margin: 30px 0;
-      padding: 15px 30px;
-      background: var(--light);
-      color: var(--primary);
-      border: 2px solid var(--primary);
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: var(--transition);
-      font-size: 1.1rem;
-    }
-    
-    .back-to-home:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-3px);
-      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-    }
-    
-    .back-to-home i {
-      margin-right: 8px;
-    }
-    
-    footer {
-      margin-top: 50px;
-      padding-top: 30px;
-      font-size: 0.9rem;
-      color: var(--gray);
-      border-top: 1px solid var(--light-gray);
-      text-align: center;
-    }
-    
-    footer p {
-      margin-bottom: 10px;
     }
     
     footer a {
       color: var(--primary);
       text-decoration: none;
       transition: var(--transition);
+      white-space: nowrap;
+      font-weight: 600;
     }
     
     footer a:hover {
@@ -594,10 +290,9 @@ System: I notice that the provided code is incomplete, as it ends abruptly in th
     }
     
     .creator-credit {
-      margin-top: 15px;
       font-weight: 500;
       color: var(--dark);
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     
     /* Cookie Consent Styles */
@@ -890,6 +585,11 @@ System: I notice that the provided code is incomplete, as it ends abruptly in th
       .cookie-btn {
         width: 100%;
       }
+      
+      footer {
+        padding-top: 20px;
+        margin-top: 30px;
+      }
     }
     
     @media (max-width: 480px) {
@@ -1054,11 +754,14 @@ System: I notice that the provided code is incomplete, as it ends abruptly in th
     </div>
 
     <footer>
-      <p>
-        <a href="/privacy-policy">Privacy Policy</a> | 
+      <div class="footer-content">
+        <span>© 2025</span>
+        <a href="https://everytool.io">EveryTool.io</a>
+        <span class="separator">|</span>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <span class="separator">|</span>
         <a href="#" id="open-settings-footer">Cookie Settings</a>
-      </p>
-      <p class="creator-credit">© 2025 Free Barcode Generator | Made by <a href="https://everytool.io">EveryTool.io</a></p>
+      </div>
     </footer>
   </div>
   
