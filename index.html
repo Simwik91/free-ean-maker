@@ -896,7 +896,7 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
-    /* NEW: Customization Panel */
+    /* UPDATED: Customization Panel */
     .customization-panel {
       background: #f8f9ff;
       border-radius: var(--border-radius);
@@ -951,69 +951,10 @@
       justify-content: center;
     }
     
-    .size-controls-row {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-    
-    .size-control {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 200px;
-    }
-    
-    .size-control label {
-      font-weight: 500;
-      margin-bottom: 10px;
-    }
-    
-    .size-controls {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      width: 100%;
-    }
-    
     .reset-btn {
       display: flex;
       justify-content: center;
       margin-top: 20px;
-    }
-    
-    .size-slider {
-      flex: 1;
-      height: 8px;
-      border-radius: 4px;
-      background: var(--light-gray);
-      outline: none;
-      -webkit-appearance: none;
-    }
-    
-    .size-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--primary);
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      transition: var(--transition);
-    }
-    
-    .size-slider::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
-    }
-    
-    .size-value {
-      min-width: 80px;
-      text-align: center;
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: var(--primary);
     }
     
     button.secondary {
@@ -1101,11 +1042,6 @@
       }
       .everytool-card h3 {
         justify-content: center;
-      }
-      
-      .size-controls-row {
-        flex-direction: column;
-        gap: 20px;
       }
       
       footer {
@@ -1263,7 +1199,7 @@
     </div>
 
     <div class="card">
-      <!-- Customization Panel -->
+      <!-- Updated Customization Panel -->
       <div class="customization-panel">
         <h2><i class="fas fa-sliders-h"></i> Customization Settings</h2>
         <p style="text-align: center; margin-bottom: 20px; color: var(--gray);">These settings apply to all generated barcodes</p>
@@ -1278,8 +1214,8 @@
                 <input type="color" id="bar-color" value="#000000">
               </div>
               <div class="color-option">
-                <label for="text-color">Text Color:</label>
-                <input type="color" id="text-color" value="#000000">
+                <label for="background-color">Background Color:</label>
+                <input type="color" id="background-color" value="#ffffff">
               </div>
             </div>
             
@@ -1291,26 +1227,7 @@
             </div>
           </div>
           
-          <!-- Size Options -->
-          <div>
-            <h3><i class="fas fa-expand-arrows-alt"></i> Adjust Size</h3>
-            <div class="size-controls-row">
-              <div class="size-control">
-                <label>Width:</label>
-                <div class="size-controls">
-                  <input type="range" id="barcode-width" min="200" max="800" value="320" class="size-slider">
-                  <span class="size-value" id="barcode-width-value">320px</span>
-                </div>
-              </div>
-              <div class="size-control">
-                <label>Height:</label>
-                <div class="size-controls">
-                  <input type="range" id="barcode-height" min="50" max="300" value="150" class="size-slider">
-                  <span class="size-value" id="barcode-height-value">150px</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- Size Options Removed as requested -->
         </div>
         
         <div class="reset-btn">
@@ -1573,12 +1490,8 @@
       analyticsToggle: document.getElementById('analytics-toggle'),
       advertisingToggle: document.getElementById('advertising-toggle'),
       barColor: document.getElementById('bar-color'),
-      textColor: document.getElementById('text-color'),
+      backgroundColor: document.getElementById('background-color'), // Changed from textColor to backgroundColor
       transparentBg: document.getElementById('transparent-bg'),
-      barcodeWidth: document.getElementById('barcode-width'),
-      barcodeWidthValue: document.getElementById('barcode-width-value'),
-      barcodeHeight: document.getElementById('barcode-height'),
-      barcodeHeightValue: document.getElementById('barcode-height-value'),
       resetCustomizationBtn: document.getElementById('reset-customization')
     };
 
@@ -1594,33 +1507,14 @@
       pharmacode: { min: 3, max: 131070, regex: /^\d+$/, format: 'pharmacode' }
     };
 
-    // Initialize slider values
-    elements.barcodeWidthValue.textContent = elements.barcodeWidth.value + 'px';
-    elements.barcodeHeightValue.textContent = elements.barcodeHeight.value + 'px';
-    
-    // Update slider displays
-    elements.barcodeWidth.addEventListener('input', function() {
-      elements.barcodeWidthValue.textContent = this.value + 'px';
-    });
-    
-    elements.barcodeHeight.addEventListener('input', function() {
-      elements.barcodeHeightValue.textContent = this.value + 'px';
-    });
-    
     // Reset customization
     elements.resetCustomizationBtn.addEventListener('click', function() {
       // Reset color pickers
       elements.barColor.value = '#000000';
-      elements.textColor.value = '#000000';
+      elements.backgroundColor.value = '#ffffff'; // Reset background to white
       
       // Reset background
       elements.transparentBg.checked = false;
-      
-      // Reset barcode size
-      elements.barcodeWidth.value = '320';
-      elements.barcodeWidthValue.textContent = '320px';
-      elements.barcodeHeight.value = '150';
-      elements.barcodeHeightValue.textContent = '150px';
     });
 
     function getCookiePreferences() {
@@ -1762,8 +1656,8 @@
           width: 2,
           height: canvas.height * 0.7,
           lineColor: elements.barColor.value,
-          textColor: elements.textColor.value,
-          background: elements.transparentBg.checked ? 'transparent' : '#ffffff'
+          textColor: elements.barColor.value, // Text color matches bar color
+          background: elements.transparentBg.checked ? 'transparent' : elements.backgroundColor.value
         });
 
         // Serialize SVG
@@ -1802,8 +1696,9 @@
 
       const finalCode = code || generateRandomBarcode(type);
       const isPharmacode = type === 'pharmacode';
-      const width = parseInt(elements.barcodeWidth.value);
-      const height = parseInt(elements.barcodeHeight.value);
+      // Fixed size as requested
+      const width = 320;
+      const height = 150;
       
       // Set canvas dimensions
       canvas.width = width;
@@ -1820,8 +1715,8 @@
           width: 2,
           height: isPharmacode ? height * 0.5 : height * 0.7,
           lineColor: elements.barColor.value,
-          textColor: elements.textColor.value,
-          background: elements.transparentBg.checked ? 'transparent' : '#ffffff'
+          textColor: elements.barColor.value, // Text color matches bar color
+          background: elements.transparentBg.checked ? 'transparent' : elements.backgroundColor.value
         });
 
         downloadButton.style.display = 'inline-block';
@@ -1850,8 +1745,9 @@
     async function generateBatchEANs() {
       const type = elements.batchEanType.value;
       const amount = parseInt(elements.batchAmount.value);
-      const width = parseInt(elements.barcodeWidth.value);
-      const height = parseInt(elements.barcodeHeight.value);
+      // Fixed size as requested
+      const width = 320;
+      const height = 150;
 
       if (isNaN(amount) || amount < 1 || amount > 100) {
         showError(elements.batchError, 'Please enter a number between 1 and 100');
@@ -1883,8 +1779,8 @@
               width: 2,
               height: isPharmacode ? height * 0.5 : height * 0.7,
               lineColor: elements.barColor.value,
-              textColor: elements.textColor.value,
-              background: elements.transparentBg.checked ? 'transparent' : '#ffffff'
+              textColor: elements.barColor.value, // Text color matches bar color
+              background: elements.transparentBg.checked ? 'transparent' : elements.backgroundColor.value
             });
 
             const dataUrl = canvas.toDataURL('image/png');
