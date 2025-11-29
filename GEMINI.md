@@ -17,12 +17,15 @@ To maintain project clarity and ease of navigation, the following structure guid
     -   `GEMINI.md`: Project-specific context and instructions for the AI assistant.
     -   `favicon.ico` / `favicon.png`: The site's favicon.
     -   `CNAME`: Defines the custom domain for GitHub Pages.
-    -   `index.html`: The main entry point of the website.
+    -   `index.html`: The main entry point of the website, now linking to external CSS and JavaScript files.
     -   `robots.txt`: Instructions for web crawlers.
     -   `sitemap.xml`: A map of the site for search engines.
-    -   `server.py`: A simple Python script to run a local HTTP server for development.
+    -   `start_server.py`: A simple Python script to run a local HTTP server for development.
 -   **`/css` Folder:** All stylesheets go here, split into modules for maintainability.
+    -   `styles.css`: The main stylesheet for the website.
 -   **`/js` Folder:** All JavaScript files go here, split into modules for maintainability.
+    -   `main.js`: The primary JavaScript logic for the website.
+    -   `bmc.js`: JavaScript for the "Buy Me a Coffee" integration.
 -   **`/images` Folder:** Contains all image assets.
 -   **`/includes` Folder:** Contains shared HTML components like headers and footers to ensure reusability.
 
